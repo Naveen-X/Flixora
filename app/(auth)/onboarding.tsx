@@ -1,8 +1,10 @@
-import { Link } from "expo-router";
+import { useAuth } from "../../context/AuthContest";
 import { StatusBar } from "expo-status-bar";
 import { Text, TouchableOpacity, View } from "react-native";
 
 export default function Onboarding() {
+  const { setIsLoggedIn } = useAuth();
+
   return (
     <View className="flex-1 items-center justify-center bg-slate-950 p-4">
       <View className="flex-1 justify-center items-center">
@@ -11,11 +13,12 @@ export default function Onboarding() {
           Your ultimate destination for endless entertainment. Discover, watch, and enjoy!
         </Text>
       </View>
-      <Link href="/(auth)/mode-selector" asChild>
-        <TouchableOpacity className="w-full bg-red-600 p-4 rounded-lg items-center mb-8">
-          <Text className="text-white text-lg font-semibold">Continue</Text>
-        </TouchableOpacity>
-      </Link>
+      <TouchableOpacity
+        className="w-full bg-white p-4 rounded-lg items-center mb-8"
+        onPress={() => setIsLoggedIn(true)}
+      >
+        <Text className="text-black text-lg font-semibold">Continue</Text>
+      </TouchableOpacity>
       <StatusBar style="auto" />
     </View>
   );

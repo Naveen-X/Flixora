@@ -1,44 +1,20 @@
-import { createContext, useContext, useState, useEffect } from 'react';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import { createContext, useContext, useState } from 'react';
 
-const ModeContext = createContext({ mode: 'anime', setMode: (mode: string) => {} });
+const ModeContext = createContext({ mode: null, setMode: (mode: string) => {} });
 
 export function useMode() {
   return useContext(ModeContext);
 }
 
 export function ModeProvider({ children }) {
-  const [mode, setMode] = useState('anime');
-  const [isLoading, setIsLoading] = useState(true);
+  const [mode, setMode] = useState(null);
 
-  useEffect(() => {
-    const loadMode = async () => {
-      try {
-        const savedMode = await AsyncStorage.getItem('mode');
-        if (savedMode) {
-          setMode(savedMode);
-        }
-      } catch (error) {
-        console.error('Failed to load mode from storage', error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    loadMode();
-  }, []);
-
-  const handleSetMode = async (newMode: string) => {
-    try {
-      await AsyncStorage.setItem('mode', newMode);
-      setMode(newMode);
-    } catch (error) {
-      console.error('Failed to save mode to storage', error);
-    }
+  const handleSetMode = (newMode: string) => {
+    setMode(newMode);
   };
 
   return (
-    <ModeContext.Provider value={{ mode, setMode: handleSetMode, isLoading }}>
+    <ModeContext.Provider value={{ mode, setMode: handleSetMode }}>
       {children}
     </ModeContext.Provider>
   );

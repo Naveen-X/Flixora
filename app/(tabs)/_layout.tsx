@@ -1,5 +1,5 @@
 import { Feather } from "@expo/vector-icons";
-import { Tabs, useRouter } from "expo-router";
+import { Tabs } from "expo-router";
 import { useEffect } from "react";
 import { Alert, BackHandler, View } from "react-native";
 
@@ -32,7 +32,7 @@ export default function TabLayout() {
     <Tabs
       screenOptions={{
         headerShown: false,
-        tabBarActiveTintColor: "#E50914", // Netflix Red
+        tabBarActiveTintColor: "#FFFFFF", // White color
         tabBarInactiveTintColor: "#808080", // Gray
         tabBarStyle: {
           backgroundColor: "rgba(20, 20, 20, 0.9)", // Dark translucent background

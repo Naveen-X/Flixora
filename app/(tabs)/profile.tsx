@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
-import { Text, View, Image, ScrollView, TouchableOpacity } from 'react-native';
 import { Feather } from "@expo/vector-icons";
+import React, { useState } from 'react';
+import { Image, Text, TouchableOpacity, View } from 'react-native';
 
 export default function Profile() {
   const [showAccountDetails, setShowAccountDetails] = useState(false);
@@ -43,7 +43,7 @@ export default function Profile() {
       >
         <Image
           source={{ uri: userProfile.profilePic }}
-          className="w-20 h-20 rounded-full mr-4 border-2 border-red-600"
+          className="w-20 h-20 rounded-full mr-4 border-2 border-white"
         />
         <View>
           <Text className="text-white text-xl font-bold">{userProfile.name}</Text>
@@ -80,7 +80,7 @@ export default function Profile() {
             className={`flex-row items-center p-4 ${index < settingsOptions.length - 1 ? 'border-b border-neutral-700' : ''}`}
             onPress={() => handleSettingPress(option.id)}
           >
-            <Feather name={option.icon} size={22} color="#E50914" className="mr-4" />
+            <Feather name={option.icon} size={22} color="#FFFFFF" className="mr-4" />
             <Text className="text-white text-lg flex-1">{option.name}</Text>
             <Feather name="chevron-right" size={20} color="#808080" />
           </TouchableOpacity>
