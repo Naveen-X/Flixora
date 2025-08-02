@@ -7,9 +7,9 @@ export default function Profile() {
 
   // Placeholder data for profile (will be replaced by Google account data)
   const userProfile = {
-    name: "John Doe",
-    email: "john.doe@example.com",
-    profilePic: "https://via.placeholder.com/150/0000FF/FFFFFF?text=JD", // Placeholder image
+    name: "Test Mail",
+    email: "testmail@gmail.com",
+    profilePic: "../../assets/images/flixora.jpg", // Placeholder image
   };
 
   const settingsOptions = [
@@ -64,10 +64,10 @@ export default function Profile() {
             <Text className="text-white text-lg">Email: {userProfile.email}</Text>
           </View>
           <TouchableOpacity
-            className="bg-red-600 p-4 rounded-lg items-center"
+            className="bg-white p-4 rounded-lg items-center"
             onPress={handleLogout}
           >
-            <Text className="text-white text-lg font-semibold">Logout</Text>
+            <Text className="text-black text-lg font-semibold">Logout</Text>
           </TouchableOpacity>
         </View>
       )}
