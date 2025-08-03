@@ -9,7 +9,7 @@ export default function Index() {
   const { mode } = useMode();
 
   return (
-    <View className="flex-1 bg-slate-950">
+    <View className="flex-1 bg-slate-900">
       {mode === "anime" && <HomeAnime />}
       {mode === "manga" && <HomeManga />}
       {mode === "movies" && <HomeMovies />}

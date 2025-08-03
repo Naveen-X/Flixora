@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
-import { Text, View, TextInput, TouchableOpacity } from 'react-native';
 import { Feather } from "@expo/vector-icons";
+import React, { useState } from 'react';
+import { Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { useMode } from "../../context/ModeContext";
 
 export default function Search() {

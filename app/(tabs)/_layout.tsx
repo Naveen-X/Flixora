@@ -2,6 +2,7 @@ import { Feather } from "@expo/vector-icons";
 import { Tabs } from "expo-router";
 import { useEffect } from "react";
 import { Alert, BackHandler, View } from "react-native";
+import CustomTabBar from "../../components/CustomTabBar";
 
 export default function TabLayout() {
   useEffect(() => {
@@ -30,22 +31,19 @@ export default function TabLayout() {
 
   return (
     <Tabs
+      tabBar={(props) => <CustomTabBar {...props} />}
       screenOptions={{
         headerShown: false,
         tabBarActiveTintColor: "#FFFFFF", // White color
         tabBarInactiveTintColor: "#808080", // Gray
         tabBarStyle: {
-          backgroundColor: "rgba(20, 20, 20, 0.9)", // Dark translucent background
-          borderTopWidth: 0.5,
-          borderTopColor: "rgba(128, 128, 128, 0.3)", // Subtle gray border
+          backgroundColor: "transparent", // Make background transparent to show blur
+          borderTopWidth: 0,
           elevation: 0,
-          height: 75, // Increased height for more space
-          paddingBottom: 20, // Significant padding to push icons up
-          paddingTop: 10, // Balance with top padding
         },
         tabBarLabelStyle: { display: "none" }, // Hide labels
       }}
-      safeAreaInsets={{ bottom: 0 }} // Explicitly set bottom inset to 0
+      // Removed safeAreaInsets={{ bottom: 0 }} to allow content to extend behind tab bar
     >
       <Tabs.Screen
         name="index"
