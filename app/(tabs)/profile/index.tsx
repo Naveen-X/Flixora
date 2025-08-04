@@ -1,37 +1,35 @@
+import ModeSwitcher from "../../../components/ModeSwitcher";
 import { Feather } from "@expo/vector-icons";
-import React, { useState } from 'react';
+import { useRouter } from "expo-router";
+import React from 'react';
 import { Image, Text, TouchableOpacity, View } from 'react-native';
 
 export default function Profile() {
-  const [showAccountDetails, setShowAccountDetails] = useState(false);
+  const router = useRouter();
 
   // Placeholder data for profile (will be replaced by Google account data)
   const userProfile = {
     name: "Test Mail",
     email: "testmail@gmail.com",
-    profilePic: "../../assets/images/flixora.jpg", // Placeholder image
+    profilePic: require("../../../assets/images/flixora.jpg"), // Placeholder image
   };
 
   const settingsOptions = [
     { id: 'settings', name: 'Settings', icon: 'settings' },
     { id: 'developers', name: 'Developers', icon: 'code' },
     { id: 'credits', name: 'Credits', icon: 'award' },
-    { id: 'version', name: 'App Version', icon: 'info' },
+    { id: 'app-version', name: 'App Version', icon: 'info' }, // Changed 'version' to 'app-version' to match _layout.tsx
   ];
 
   const handleSettingPress = (id: string) => {
-    console.log(`Option pressed: ${id}`);
-    // Implement navigation or action for each option
+    router.push(`/profile/${id}`);
   };
 
   const handleAccountPress = () => {
-    setShowAccountDetails(true);
-  };
-
-  const handleLogout = () => {
-    console.log("Logging out...");
-    // Implement logout logic here
-    setShowAccountDetails(false);
+    router.push({
+      pathname: "/profile/account-details",
+      params: userProfile,
+    });
   };
 
   return (
@@ -42,7 +40,7 @@ export default function Profile() {
         onPress={handleAccountPress}
       >
         <Image
-          source={{ uri: userProfile.profilePic }}
+          source={userProfile.profilePic}
           className="w-20 h-20 rounded-full mr-4 border-2 border-white"
         />
         <View>
@@ -52,25 +50,8 @@ export default function Profile() {
         <Feather name="chevron-right" size={20} color="#808080" className="ml-auto" />
       </TouchableOpacity>
 
-      {/* Account Details Modal (Simplified) */}
-      {showAccountDetails && (
-        <View className="absolute inset-0 bg-slate-950 z-10 p-4 pt-16">
-          <TouchableOpacity onPress={() => setShowAccountDetails(false)} className="mb-6">
-            <Feather name="arrow-left" size={24} color="white" />
-          </TouchableOpacity>
-          <Text className="text-white text-3xl font-bold mb-6">Account Details</Text>
-          <View className="bg-neutral-800 rounded-lg p-4 mb-4">
-            <Text className="text-white text-lg mb-2">Name: {userProfile.name}</Text>
-            <Text className="text-white text-lg">Email: {userProfile.email}</Text>
-          </View>
-          <TouchableOpacity
-            className="bg-white p-4 rounded-lg items-center"
-            onPress={handleLogout}
-          >
-            <Text className="text-black text-lg font-semibold">Logout</Text>
-          </TouchableOpacity>
-        </View>
-      )}
+      {/* Mode Switcher */}
+      <ModeSwitcher />
 
       {/* Combined Options Section */}
       <View className="bg-neutral-800 rounded-lg mb-6 overflow-hidden">

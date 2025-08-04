@@ -26,7 +26,7 @@ export default function SplashScreen() {
         }).start();
       }, 200); // Shorter pause
     });
-  }, []);
+  }, [animatedValues, containerAnim]);
 
   const containerStyle = {
     opacity: containerAnim,

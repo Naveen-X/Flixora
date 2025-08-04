@@ -1,9 +1,13 @@
 import { createContext, useContext, useState } from 'react';
 
-const ModeContext = createContext({ mode: null, setMode: (mode: string) => {} });
+const ModeContext = createContext(undefined);
 
 export function useMode() {
-  return useContext(ModeContext);
+  const context = useContext(ModeContext);
+  if (context === undefined) {
+    throw new Error('useMode must be used within a ModeProvider');
+  }
+  return context;
 }
 
 export function ModeProvider({ children }) {

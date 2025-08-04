@@ -36,7 +36,7 @@ export default function Search() {
       {/* Search results or suggestions can go here */}
       <View className="flex-1 justify-center items-center">
         {lastSearchedText ? (
-          <Text className="text-gray-400 text-lg">Showing results for "{lastSearchedText}"</Text>
+          <Text className="text-gray-400 text-lg">{`Showing results for "${lastSearchedText}"`}</Text>
         ) : (
           <Text className="text-gray-400 text-lg">Start typing to search</Text>
         )}

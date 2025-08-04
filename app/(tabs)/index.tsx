@@ -1,19 +1,21 @@
-import { View } from "react-native";
+import { ActivityIndicator, View } from "react-native";
+import ModeRenderer from "../../components/ModeRenderer";
 import { useMode } from "../../context/ModeContext";
-import HomeAnime from "../home/home-anime";
-import HomeManga from "../home/home-manga";
-import HomeMovies from "../home/home-movies";
-import HomeTV from "../home/home-tv";
 
 export default function Index() {
   const { mode } = useMode();
 
+  if (!mode) {
+    return (
+      <View className="flex-1 justify-center items-center bg-slate-900">
+        <ActivityIndicator size="large" color="#ffffff" />
+      </View>
+    );
+  }
+
   return (
     <View className="flex-1 bg-slate-900">
-      {mode === "anime" && <HomeAnime />}
-      {mode === "manga" && <HomeManga />}
-      {mode === "movies" && <HomeMovies />}
-      {mode === "tv" && <HomeTV />}
+      <ModeRenderer />
     </View>
   );
 }
