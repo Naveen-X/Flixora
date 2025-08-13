@@ -9,7 +9,7 @@ const modes = [
   { id: 'manga', name: 'Manga', image: require('../assets/images/anime/anime-2.jpg') },
 ];
 
-export default function ModeSwitcher() {
+function ModeSwitcher() {
   const { mode: activeMode, setMode } = useMode();
 
   const handleModeSelect = (mode) => {
@@ -40,3 +40,5 @@ export default function ModeSwitcher() {
     </View>
   );
 }
+
+export default React.memo(ModeSwitcher);

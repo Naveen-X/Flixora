@@ -37,6 +37,9 @@
     ],
     "experiments": {
       "typedRoutes": true
+    },
+    "extra": {
+      "tmdbApiKey": "eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI4NjllZDBjOTUxOWY0Y2MwZTJhOWYwYTE0ZTEwYzUyNyIsIm5iZiI6MTc1NDc1NjkzNC4zMTgsInN1YiI6IjY4OTc3NzQ2OTBhNTIwOGE3ZTI2Nzg1ZSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.wtHVHR44BL3hUAAHB46sYipcGm4CppGLQcNlTGQKcuE"
     }
   }
 }

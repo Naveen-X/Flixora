@@ -1,5 +1,7 @@
-import { Slot, useRouter } from "expo-router";
+import { useRouter, Stack } from "expo-router";
+import { StatusBar } from "expo-status-bar";
 import { useEffect, useState } from "react";
+import { SafeAreaView } from "react-native-safe-area-context";
 import { AuthProvider, useAuth } from "../context/AuthContest";
 import { ModeProvider, useMode } from "../context/ModeContext";
 import "./globals.css";
@@ -9,7 +11,7 @@ function RootLayoutNav() {
   const { isLoggedIn, isLoading } = useAuth();
   const { mode } = useMode();
   const router = useRouter();
-  const [isSplashAnimationFinished, setSplashAnimationFinished] = useState(false);
+  const [isSplashAnimationFinished,setSplashAnimationFinished] = useState(false);
 
   useEffect(() => {
     if (!isLoading) {
@@ -35,13 +37,26 @@ function RootLayoutNav() {
       }, 0);
       return () => clearTimeout(navTimer);
     }
-  }, [isSplashAnimationFinished, isLoggedIn, mode, router]);
+  }, [isSplashAnimationFinished, isLoggedIn, mode,router]);
 
   if (!isSplashAnimationFinished) {
     return <SplashScreen />;
   }
 
-  return <Slot />;
+  return (
+    <>
+      <StatusBar style="light" backgroundColor="#020617" />
+      <SafeAreaView style={{ flex: 1 }} className="bg-slate-950">
+        <Stack>
+          <Stack.Screen name="(auth)/onboarding" options={{ headerShown: false }} />
+          <Stack.Screen name="(auth)/mode-selector" options={{ headerShown: false }} />
+          <Stack.Screen name="(tabs)" options={{ headerShown: false, animation: 'slide_from_right' }} />
+          <Stack.Screen name="movies/[id]" options={{ headerShown: false, animation: 'slide_from_right' }} />
+          <Stack.Screen name="movies/play/[id]" options={{ headerShown: false, animation: 'slide_from_right' }} />
+        </Stack>
+      </SafeAreaView>
+    </>
+  );
 }
 
 export default function RootLayout() {

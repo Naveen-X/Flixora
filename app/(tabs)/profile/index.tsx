@@ -1,8 +1,8 @@
-import ModeSwitcher from "../../../components/ModeSwitcher";
 import { Feather } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
 import React from 'react';
 import { Image, Text, TouchableOpacity, View } from 'react-native';
+import ModeSwitcher from "../../../components/ModeSwitcher";
 
 export default function Profile() {
   const router = useRouter();
@@ -33,7 +33,7 @@ export default function Profile() {
   };
 
   return (
-    <View className="flex-1 bg-slate-950 p-4 pt-16">
+    <View className="flex-1 bg-slate-950 p-4">
       {/* Profile Card */}
       <TouchableOpacity
         className="bg-neutral-800 rounded-lg p-4 flex-row items-center mb-6"
@@ -58,7 +58,7 @@ export default function Profile() {
         {settingsOptions.map((option, index) => (
           <TouchableOpacity
             key={option.id}
-            className={`flex-row items-center p-4 ${index < settingsOptions.length - 1 ? 'border-b border-neutral-700' : ''}`}
+            className={`flex-row items-center p-4 ${index < settingsOptions.length - 1 ? 'border-b border-slate-950' : ''}`}
             onPress={() => handleSettingPress(option.id)}
           >
             <Feather name={option.icon} size={22} color="#FFFFFF" className="mr-4" />

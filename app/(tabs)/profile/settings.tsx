@@ -2,7 +2,7 @@ import { Text, View } from "react-native";
 
 export default function Settings() {
   return (
-    <View className="flex-1 bg-slate-950 justify-center items-center" style={{ backgroundColor: '#020617' }}>
+    <View className="flex-1 bg-slate-950 justify-center items-center">
       <Text className="text-white text-2xl">Settings</Text>
     </View>
   );

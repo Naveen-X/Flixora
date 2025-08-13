@@ -1,5 +1,5 @@
 import { useAuth } from "../../context/AuthContest";
-import { StatusBar } from "expo-status-bar";
+
 import { Text, TouchableOpacity, View } from "react-native";
 
 export default function Onboarding() {
@@ -19,7 +19,7 @@ export default function Onboarding() {
       >
         <Text className="text-black text-lg font-semibold">Continue</Text>
       </TouchableOpacity>
-      <StatusBar style="auto" />
+      
     </View>
   );
 }
