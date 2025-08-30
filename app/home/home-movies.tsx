@@ -1,3 +1,4 @@
+import { SharedElement } from 'react-navigation-shared-element';
 import React, { useEffect, useState, useRef, useCallback } from 'react';
 import { View, Text, FlatList, TouchableOpacity, StyleSheet, Dimensions, ActivityIndicator } from 'react-native';
 import { Image } from 'expo-image';
@@ -91,17 +92,19 @@ export default function HomeMovies() {
   const renderMovieItem = ({ item }: { item: Movie }) => (
     <Link href={`/movies/${item.id}`} asChild>
       <TouchableOpacity style={styles.movieItem}>
-        <View style={styles.posterContainer}>
-          <Image
-            source={{ uri: `https://image.tmdb.org/t/p/w500${item.poster_path}` }}
-            style={styles.poster}
-            contentFit="cover"
-          />
-          <LinearGradient
-            colors={['transparent', 'rgba(0,0,0,0.8)']}
-            style={styles.gradient}
-          />
-        </View>
+        <SharedElement id={`item.${item.id}.poster`}>
+          <View style={styles.posterContainer}>
+            <Image
+              source={{ uri: `https://image.tmdb.org/t/p/w500${item.poster_path}` }}
+              style={styles.poster}
+              contentFit="cover"
+            />
+            <LinearGradient
+              colors={['transparent', 'rgba(0,0,0,0.8)']}
+              style={styles.gradient}
+            />
+          </View>
+        </SharedElement>
         <View style={styles.movieTextContainer}>
           <Text style={styles.movieTitle} numberOfLines={2}>{item.title}</Text>
           <View style={styles.ratingContainer}>
@@ -116,17 +119,19 @@ export default function HomeMovies() {
   const renderTrendingItem = ({ item }: { item: Movie }) => (
     <Link href={`/movies/${item.id}`} asChild>
       <TouchableOpacity style={styles.trendingItem}>
-        <View style={styles.posterContainer}>
-          <Image
-            source={{ uri: `https://image.tmdb.org/t/p/w780${item.backdrop_path}` }}
-            style={styles.trendingBackdrop}
-            contentFit="cover"
-          />
-          <LinearGradient
-            colors={['transparent', 'rgba(0,0,0,0.9)']}
-            style={styles.gradient}
-          />
-        </View>
+        <SharedElement id={`item.${item.id}.poster`}>
+          <View style={styles.posterContainer}>
+            <Image
+              source={{ uri: `https://image.tmdb.org/t/p/w780${item.backdrop_path}` }}
+              style={styles.trendingBackdrop}
+              contentFit="cover"
+            />
+            <LinearGradient
+              colors={['transparent', 'rgba(0,0,0,0.9)']}
+              style={styles.gradient}
+            />
+          </View>
+        </SharedElement>
         <View style={styles.trendingOverlay}>
           <Text style={styles.trendingTitle} numberOfLines={2}>{item.title}</Text>
           <View style={styles.trendingBadge}>
@@ -164,9 +169,9 @@ export default function HomeMovies() {
               snapToInterval={width} // Item width
               decelerationRate="fast"
               contentContainerStyle={{ paddingHorizontal: 0 }}
-              initialNumToRender={1} // Optimize rendering
-              windowSize={5} // Optimize rendering
-              maxToRenderPerBatch={3} // Optimize rendering
+              initialNumToRender={3} // Optimize rendering
+              windowSize={9} // Optimize rendering
+              maxToRenderPerBatch={5} // Optimize rendering
               onViewableItemsChanged={onViewableItemsChanged}
               viewabilityConfig={{ itemVisiblePercentThreshold: 50 }}
             />
@@ -191,9 +196,9 @@ export default function HomeMovies() {
               horizontal
               showsHorizontalScrollIndicator={false}
               contentContainerStyle={styles.genreMovieListContainer}
-              initialNumToRender={5} // Optimize rendering
-              windowSize={7} // Optimize rendering
-              maxToRenderPerBatch={5} // Optimize rendering
+              initialNumToRender={7} // Optimize rendering
+              windowSize={11} // Optimize rendering
+              maxToRenderPerBatch={7} // Optimize rendering
             />
           </View>
         )}

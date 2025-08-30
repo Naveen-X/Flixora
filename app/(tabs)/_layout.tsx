@@ -2,6 +2,7 @@ import { Feather } from "@expo/vector-icons";
 import { Tabs, useRouter } from "expo-router";
 import { View } from "react-native";
 import CustomTabBar from "../../components/CustomTabBar";
+import MovieStack from "../movies/_layout";
 
 export default function TabLayout() {
   const router = useRouter();
@@ -66,6 +67,7 @@ export default function TabLayout() {
           ),
         }}
       />
+      
     </Tabs>
   );
 }

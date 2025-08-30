@@ -51,6 +51,7 @@ function RootLayoutNav() {
           <Stack.Screen name="(auth)/onboarding" options={{ headerShown: false }} />
           <Stack.Screen name="(auth)/mode-selector" options={{ headerShown: false }} />
           <Stack.Screen name="(tabs)" options={{ headerShown: false, animation: 'slide_from_right' }} />
+          <Stack.Screen name="movies" options={{ headerShown: false, animation: 'slide_from_right' }} />
           <Stack.Screen name="movies/[id]" options={{ headerShown: false, animation: 'slide_from_right' }} />
           <Stack.Screen name="movies/play/[id]" options={{ headerShown: false, animation: 'slide_from_right' }} />
         </Stack>

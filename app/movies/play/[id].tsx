@@ -1,16 +1,18 @@
-import React, { useEffect } from 'react';
-import { View, StyleSheet, ActivityIndicator } from 'react-native';
-import { useLocalSearchParams } from 'expo-router';
-import { WebView } from 'react-native-webview';
-import * as ScreenOrientation from 'expo-screen-orientation';
+import { useLocalSearchParams } from "expo-router";
+import * as ScreenOrientation from "expo-screen-orientation";
+import React, { useEffect } from "react";
+import { StyleSheet, View } from "react-native";
+import { WebView } from "react-native-webview";
 
 export default function MoviePlayerScreen() {
   const { id } = useLocalSearchParams();
-  const vidsrcUrl = `https://vidsrc.me/embed/${id}`;
+  const embedUrl = `https://vidsrc.xyz/embed/movie/${id}`;
 
   useEffect(() => {
     const lockOrientation = async () => {
-      await ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.LANDSCAPE_RIGHT);
+      await ScreenOrientation.lockAsync(
+        ScreenOrientation.OrientationLock.LANDSCAPE_RIGHT
+      );
     };
     lockOrientation();
 
@@ -25,18 +27,50 @@ export default function MoviePlayerScreen() {
   return (
     <View style={styles.container}>
       <WebView
-        source={{ uri: vidsrcUrl }}
-        style={styles.videoPlayer}
-        allowsFullscreenVideo
-        javaScriptEnabled
-        domStorageEnabled
-        startInLoadingState={true}
-        renderLoading={() => (
-          <View style={styles.loadingContainer}>
-            <ActivityIndicator size="large" color="#888" />
-          </View>
-        )}
-      />
+  source={{ uri: embedUrl }}
+  style={{ flex: 1, backgroundColor: "black" }}
+  allowsFullscreenVideo
+  javaScriptEnabled
+  domStorageEnabled
+  startInLoadingState
+  onShouldStartLoadWithRequest={(req) => {
+    if (req.url.startsWith("https://vidsrc.xyz") || req.url.startsWith("https://vidsrc.me")) {
+      return true;
+    }
+    return false;
+  }}
+  injectedJavaScript={`
+    // Kill popups
+    window.open = () => null;
+
+    // Block links
+    const killLinks = () => {
+      document.querySelectorAll("a").forEach(el => {
+        el.removeAttribute("target");
+        el.href = "javascript:void(0)";
+        el.onclick = (e) => { e.preventDefault(); return false; };
+      });
+    };
+    killLinks();
+
+    // Observer to keep cleaning ads
+    const observer = new MutationObserver(killLinks);
+    observer.observe(document.body, { childList: true, subtree: true });
+
+    // 🚫 Trap ALL clicks except <video>
+    document.addEventListener("click", (e) => {
+      const tag = e.target.tagName.toLowerCase();
+      if (tag !== "video" && tag !== "button") {
+        e.stopImmediatePropagation();
+        e.preventDefault();
+        return false;
+      }
+    }, true);
+
+    true;
+  `}
+/>
+
     </View>
   );
 }
@@ -44,13 +78,13 @@ export default function MoviePlayerScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#000',
+    backgroundColor: "#000",
   },
   loadingContainer: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#000',
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#000",
   },
   videoPlayer: {
     flex: 1,
