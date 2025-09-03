@@ -1,22 +1,26 @@
 interface CacheData {
   trendingMovies: any[];
   genreSections: any[];
-  movieDetails: { [key: number]: any }; // Add a cache for movie details
+  movieDetails: { [key: number]: any };
+  tvShowDetails: { [key: number]: any };
+  trendingTVShows: any[];
+  tvGenreSections: any[];
 }
 
 let appCache: CacheData = {
   trendingMovies: [],
   genreSections: [],
   movieDetails: {},
+  tvShowDetails: {},
+  trendingTVShows: [],
+  tvGenreSections: [],
 };
 
 export const setCache = (data: Partial<CacheData>) => {
   appCache = { ...appCache, ...data };
-  console.log("Cache: Data set. Current cache:", appCache);
 };
 
 export const getCache = (): CacheData => {
-  console.log("Cache: Data retrieved. Current cache:", appCache);
   return appCache;
 };
 
@@ -25,6 +29,8 @@ export const clearCache = () => {
     trendingMovies: [],
     genreSections: [],
     movieDetails: {},
+    tvShowDetails: {},
+    trendingTVShows: [],
+    tvGenreSections: [],
   };
-  console.log("Cache: Cleared.");
 };

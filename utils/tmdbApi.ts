@@ -31,6 +31,7 @@ const fetchFromTmdb = async (endpoint: string) => {
     return data;
   } catch (error) {
     console.error(`Error fetching from TMDB endpoint ${endpoint}:`, error);
+    console.log(error);
     return null;
   }
 };
@@ -65,7 +66,42 @@ export const getMovieCredits = async (movieId: number) => {
   return data;
 };
 
+
 export const getSimilarMovies = async (movieId: number) => {
   const data = await fetchFromTmdb(`/movie/${movieId}/similar`);
   return data?.results || [];
+};
+export const getPopularTVShows = async (): Promise<TVShow[]> => {
+  const data = await fetchFromTmdb('/tv/popular');
+  return data?.results || [];
+};
+
+export const getTrendingTVShows = async (): Promise<TVShow[]> => {
+  const data = await fetchFromTmdb('/trending/tv/week');
+  return data?.results || [];
+};
+
+export const getTVShowGenres = async (): Promise<Genre[]> => {
+  const data = await fetchFromTmdb('/genre/tv/list');
+  return data?.genres || [];
+};
+
+export const getTVShowsByGenre = async (genreId: number): Promise<TVShow[]> => {
+  const data = await fetchFromTmdb(`/discover/tv?with_genres=${genreId}`);
+  return data?.results || [];
+};
+
+export const getTVShowDetails = async (tvShowId: number) => {
+  const data = await fetchFromTmdb(`/tv/${tvShowId}?append_to_response=credits,similar`);
+  return data;
+};
+
+export const getTVEpisodeDetails = async (tvShowId: number, seasonNumber: number, episodeNumber: number) => {
+  const data = await fetchFromTmdb(`/tv/${tvShowId}/season/${seasonNumber}/episode/${episodeNumber}`);
+  return data;
+};
+
+export const getSeasonDetails = async (tvShowId: number, seasonNumber: number) => {
+  const data = await fetchFromTmdb(`/tv/${tvShowId}/season/${seasonNumber}`);
+  return data;
 };

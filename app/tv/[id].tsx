@@ -1,31 +1,35 @@
 import { Image } from 'expo-image';
-import { useRouter } from 'expo-router';
+import { useLocalSearchParams, useRouter } from 'expo-router';
 import React, { useEffect, useState } from 'react';
 import { ActivityIndicator, FlatList, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { Play, Star } from 'react-native-feather';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { WebView } from 'react-native-webview';
-import { SharedElement } from 'react-navigation-shared-element';
+
 
 import { LinearGradient } from 'expo-linear-gradient';
 import { getCache, setCache } from '../../utils/cache';
-import { getMovieDetails } from '../../utils/tmdbApi';
+import { getTVShowDetails } from '../../utils/tmdbApi';
 
 // Interfaces (assuming they are correct and don't need changes)
-interface MovieDetails {
-  title: string;
+interface TVShowDetails {
+  name: string;
   overview: string;
   poster_path: string;
-  release_date: string;
+  first_air_date: string;
   genres: { name: string }[];
-  runtime: number;
+  episode_run_time: number[];
   vote_average: number;
   vote_count: number;
-  budget: number;
-  revenue: number;
   production_companies: { name: string }[];
   credits: { cast: CastMember[] };
-  similar: { results: SimilarMovie[] };
+  similar: { results: SimilarTVShow[] };
+  seasons: {
+    id: number;
+    name: string;
+    season_number: number;
+    episode_count: number;
+    poster_path: string;
+  }[];
 }
 
 interface CastMember {
@@ -35,18 +39,18 @@ interface CastMember {
   character: string;
 }
 
-interface SimilarMovie {
+interface SimilarTVShow {
   id: number;
-  title: string;
+  name: string;
   poster_path: string;
 }
 
-interface MovieInfoProps {
+interface TVInfoProps {
   label: string;
   value?: string | number | null;
 }
 
-const MovieInfo = ({ label, value }: MovieInfoProps) => (
+const MovieInfo = ({ label, value }: TVInfoProps) => (
   <View style={styles.movieInfoContainer}>
     <Text style={styles.movieInfoLabel}>{label}</Text>
     <Text style={styles.movieInfoValue}>
@@ -57,40 +61,47 @@ const MovieInfo = ({ label, value }: MovieInfoProps) => (
 
 function Details(props) {
   const router = useRouter();
-  const { id } = props.route.params;
-  const [movie, setMovie] = useState<MovieDetails | null>(null);
+  const { id } = useLocalSearchParams();
+  const [movie, setMovie] = useState<TVShowDetails | null>(null);
   const [cast, setCast] = useState<CastMember[]>([]);
-  const [similarMovies, setSimilarMovies] = useState<SimilarMovie[]>([]);
+  const [similarTVShows, setSimilarTVShows] = useState<SimilarTVShow[]>([]);
   const [loading, setLoading] = useState(true);
-  const [showPlayer, setShowPlayer] = useState(false);
 
   useEffect(() => {
+    console.log('useEffect in MovieDetails, id:', id);
     const fetchDetails = async () => {
+      console.log('fetchDetails started');
       if (!id) return;
       setLoading(true);
       try {
-        const cachedMovie = getCache().movieDetails[Number(id)];
-        if (cachedMovie && cachedMovie.credits && cachedMovie.similar) {
-          setMovie(cachedMovie);
-          setCast(cachedMovie.credits.cast);
-          setSimilarMovies(cachedMovie.similar.results);
+        const cachedTVShow = getCache().tvShowDetails[Number(id)];
+        if (cachedTVShow && cachedTVShow.credits && cachedTVShow.similar) {
+          setMovie(cachedTVShow);
+          console.log('TV Show state after cache:', cachedTVShow?.name);
+          setSimilarTVShows(cachedTVShow.similar.results);
+          console.log('TV Show details loaded from cache:', cachedTVShow.name);
         } else {
-          const movieDetails = await getMovieDetails(Number(id));
-          setMovie(movieDetails);
-          setCast(movieDetails.credits.cast);
-          setSimilarMovies(movieDetails.similar.results);
+          const tvShowDetails = await getTVShowDetails(Number(id));
+          setMovie(tvShowDetails);
+          console.log('TV Show state after API fetch:', tvShowDetails?.name);
+          setCast(tvShowDetails.credits.cast);
+          setSimilarTVShows(tvShowDetails.similar.results);
           setCache({
-            movieDetails: { ...getCache().movieDetails, [Number(id)]: movieDetails },
+            tvShowDetails: { ...getCache().tvShowDetails, [Number(id)]: tvShowDetails },
           });
+          console.log('TV Show details fetched from API:', tvShowDetails.name);
         }
       } catch (error) {
         console.error("Error fetching movie details:", error);
       } finally {
         setLoading(false);
+        console.log('setLoading(false) called');
       }
     };
     fetchDetails();
   }, [id]);
+
+  console.log('Rendering MovieDetails, loading:', loading, 'movie:', movie?.title);
 
   if (loading) {
     return (
@@ -100,6 +111,17 @@ function Details(props) {
     );
   }
 
+    console.log('Rendering TVShowDetails, loading:', loading, 'tvShow:', movie?.name);
+
+  if (!movie) {
+    return (
+      <SafeAreaView style={styles.loadingContainer}>
+        <Text style={styles.errorText}>TV Show not found.</Text>
+      </SafeAreaView>
+    );
+  }
+
+  console.log('Before !movie check, tvShow:', movie?.name, 'loading:', loading);
   if (!movie) {
     return (
       <SafeAreaView style={styles.loadingContainer}>
@@ -108,19 +130,18 @@ function Details(props) {
     );
   }
 
-  
-
   return (
+    console.log('Rendering main movie details view'),
     <View style={styles.container}>
       <ScrollView style={{ flex: 1 }} contentContainerStyle={styles.scrollContentContainer}>
-        <View style={styles.posterContainer}>
-          <SharedElement id={`item.${id}.poster`}>
+                <View style={styles.posterContainer}>
+          {/* <SharedElement id={`item.${movie?.id}.poster`}> */}
             <Image
               source={{ uri: `https://image.tmdb.org/t/p/w500${movie?.poster_path}` }}
               style={styles.poster}
               resizeMode="cover"
             />
-          </SharedElement>
+          {/* </SharedElement> */}
           <LinearGradient
             colors={['transparent', 'rgba(0,0,0,0.8)']}
             style={styles.gradient}
@@ -128,10 +149,10 @@ function Details(props) {
         </View>
 
         <View style={styles.detailsContainer}>
-          <Text style={styles.title}>{movie?.title}</Text>
+          <Text style={styles.title}>{movie?.name}</Text>
           <View style={styles.subtitleContainer}>
             <Text style={styles.subtitleText}>
-              {movie?.release_date?.split("-")[0]} • {movie?.runtime}m
+              {movie?.first_air_date?.split("-")[0]} • {movie?.episode_run_time[0]}m
             </Text>
           </View>
 
@@ -144,10 +165,7 @@ function Details(props) {
           <MovieInfo label="Overview" value={movie?.overview} />
           <MovieInfo label="Genres" value={movie?.genres?.map((g) => g.name).join(" • ") || "N/A"} />
 
-          <View style={styles.financialInfoContainer}>
-            <MovieInfo label="Budget" value={`${((movie?.budget ?? 0) / 1_000_000).toFixed(2)} million`} />
-            <MovieInfo label="Revenue" value={`${((movie?.revenue ?? 0) / 1_000_000).toFixed(2)} million`} />
-          </View>
+          
 
           <MovieInfo label="Production Companies" value={movie?.production_companies?.map((c) => c.name).join(" • ") || "N/A"} />
 
@@ -169,13 +187,13 @@ function Details(props) {
           </View>
 
           <View style={styles.similarContainer}>
-            <Text style={styles.sectionTitle}>Similar Movies</Text>
+            <Text style={styles.sectionTitle}>Similar TV Shows</Text>
             <FlatList
-              data={similarMovies}
+              data={similarTVShows}
               renderItem={({ item }) => (
-                <TouchableOpacity onPress={() => router.push(`/movies/${item.id}`)} style={styles.similarItem}>
+                <TouchableOpacity onPress={() => router.push(`/tv/${item.id}`)} style={styles.similarItem}>
                   <Image source={{ uri: `https://image.tmdb.org/t/p/w200${item.poster_path}` }} style={styles.similarImage} />
-                  <Text style={styles.similarTitle} numberOfLines={2}>{item.title}</Text>
+                  <Text style={styles.similarTitle} numberOfLines={2}>{item.name}</Text>
                 </TouchableOpacity>
               )}
               keyExtractor={(item) => item.id.toString()}
@@ -189,7 +207,7 @@ function Details(props) {
       <View style={styles.playButtonContainer}>
         <TouchableOpacity
           style={styles.playButton}
-          onPress={() => router.push(`/player?id=${id}&type=movie`)}
+          onPress={() => router.push(`/player?id=${id}&type=tv`)}
         >
           <Play color="white" width={20} height={20} style={styles.playIcon} />
           <Text style={styles.playButtonText}>Play</Text>

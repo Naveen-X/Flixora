@@ -54,6 +54,7 @@ function RootLayoutNav() {
           <Stack.Screen name="movies" options={{ headerShown: false, animation: 'slide_from_right' }} />
           <Stack.Screen name="movies/[id]" options={{ headerShown: false, animation: 'slide_from_right' }} />
           <Stack.Screen name="movies/play/[id]" options={{ headerShown: false, animation: 'slide_from_right' }} />
+          <Stack.Screen name="player" options={{ headerShown: false }} />
         </Stack>
       </SafeAreaView>
     </>
