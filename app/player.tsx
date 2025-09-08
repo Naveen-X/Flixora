@@ -2,7 +2,7 @@
 import { Feather } from "@expo/vector-icons";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import React, { useEffect, useState } from "react";
-import { ActivityIndicator, FlatList, ScrollView, Text, TouchableOpacity, View } from "react-native";
+import { ActivityIndicator, FlatList, Text, TouchableOpacity, View } from "react-native";
 import MoviePlayer from "../components/MoviePlayer";
 import { getMovieDetails, getSeasonDetails, getTVShowDetails } from "../utils/tmdbApi"; // Added getSeasonDetails
 
@@ -67,76 +67,84 @@ export default function Player() {
 
   if (!id) {
     return (
-      <View className="flex-1 justify-center items-items-center bg-slate-950">
+      <View className="flex-1 justify-center items-center bg-slate-950">
         <Text className="text-white text-lg">No video ID found.</Text>
       </View>
     );
   }
 
   return (
-    <View className="flex-1 bg-black">
-      <MoviePlayer
-        videoId={id as string}
-        type={type as string}
-        seasonNumber={selectedSeason?.season_number}
-        episodeNumber={selectedEpisode?.episode_number}
-        onClose={() => router.back()}
-      />
-      
+    <FlatList
+      data={[]} // No data for the main FlatList, content is in ListHeaderComponent
+      ListHeaderComponent={() => (
+        <View className="flex-1 bg-black">
+          <View className="w-full aspect-video bg-gray-800">
+            <MoviePlayer
+              videoId={id as string}
+              type={type as string}
+              seasonNumber={selectedSeason?.season_number}
+              episodeNumber={selectedEpisode?.episode_number}
+              onClose={() => router.back()}
+            />
+          </View>
 
-      <ScrollView className="flex-1 p-4">
-        {loadingDetails ? (
-          <ActivityIndicator size="large" color="white" />
-        ) : details ? (
-          <View>
-            <Text className="text-white text-2xl font-bold mb-2">{details.title || details.name}</Text>
-            <Text className="text-gray-400 text-base mb-4">{details.overview}</Text>
+          <View className="p-4 bg-gray-900 flex-1">
+            {loadingDetails ? (
+              <ActivityIndicator size="large" color="white" />
+            ) : details ? (
+              <View>
+                <Text className="text-white text-2xl font-bold mb-2">{details.title || details.name}</Text>
+                <Text className="text-gray-400 text-base mb-4">{details.overview}</Text>
 
-            {type === "tv" && details.seasons && (
-              <View className="mt-4">
-                <Text className="text-white text-xl font-bold mb-2">Seasons</Text>
-                <FlatList
-                  data={details.seasons}
-                  horizontal
-                  showsHorizontalScrollIndicator={false}
-                  keyExtractor={(item) => item.id.toString()}
-                  renderItem={({ item }) => (
-                    <TouchableOpacity
-                      className={`p-2 mr-2 rounded-md ${selectedSeason?.id === item.id ? "bg-blue-600" : "bg-gray-700"}`}
-                      onPress={() => setSelectedSeason(item)}
-                    >
-                      <Text className="text-white">{item.name}</Text>
-                    </TouchableOpacity>
-                  )}
-                />
-
-                {loadingEpisodes ? (
-                  <ActivityIndicator size="large" color="white" className="mt-4" />
-                ) : (
+                {type === "tv" && details.seasons && (
                   <View className="mt-4">
-                    <Text className="text-white text-xl font-bold mb-2">Episodes</Text>
+                    <Text className="text-white text-xl font-bold mb-2">Seasons</Text>
                     <FlatList
-                      data={episodes}
+                      data={details.seasons}
+                      horizontal
+                      showsHorizontalScrollIndicator={false}
                       keyExtractor={(item) => item.id.toString()}
                       renderItem={({ item }) => (
                         <TouchableOpacity
-                          className={`p-2 mb-2 rounded-md ${selectedEpisode?.id === item.id ? "bg-blue-600" : "bg-gray-700"}`}
-                          onPress={() => setSelectedEpisode(item)}
+                          className={`p-2 mr-2 rounded-md ${selectedSeason?.id === item.id ? "bg-blue-600" : "bg-gray-700"}`}
+                          onPress={() => setSelectedSeason(item)}
                         >
-                          <Text className="text-white">{item.episode_number}. {item.name}</Text>
-                          <Text className="text-gray-400 text-sm" numberOfLines={2}>{item.overview}</Text>
+                          <Text className="text-white">{item.name}</Text>
                         </TouchableOpacity>
                       )}
                     />
+
+                    {loadingEpisodes ? (
+                      <ActivityIndicator size="large" color="white" className="mt-4" />
+                    ) : (
+                      <View className="mt-4">
+                        <Text className="text-white text-xl font-bold mb-2">Episodes</Text>
+                        <FlatList
+                          data={episodes}
+                          keyExtractor={(item) => item.id.toString()}
+                          renderItem={({ item }) => (
+                            <TouchableOpacity
+                              className={`p-2 mb-2 rounded-md ${selectedEpisode?.id === item.id ? "bg-blue-600" : "bg-gray-700"}`}
+                              onPress={() => setSelectedEpisode(item)}
+                            >
+                              <Text className="text-white">{item.episode_number}. {item.name}</Text>
+                              <Text className="text-gray-400 text-sm" numberOfLines={2}>{item.overview}</Text>
+                            </TouchableOpacity>
+                          )}
+                        />
+                      </View>
+                    )}
                   </View>
                 )}
               </View>
+            ) : (
+              <Text className="text-white text-lg">Details not available.</Text>
             )}
           </View>
-        ) : (
-          <Text className="text-white text-lg">Details not available.</Text>
-        )}
-      </ScrollView>
-    </View>
+        </View>
+      )}
+      renderItem={null} // No items to render for the main FlatList
+      keyExtractor={(item, index) => index.toString()}
+    />
   );
 }

@@ -67,41 +67,35 @@ function Details(props) {
   const [similarTVShows, setSimilarTVShows] = useState<SimilarTVShow[]>([]);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    console.log('useEffect in MovieDetails, id:', id);
+  
+    
+    useEffect(() => {
     const fetchDetails = async () => {
-      console.log('fetchDetails started');
       if (!id) return;
       setLoading(true);
       try {
         const cachedTVShow = getCache().tvShowDetails[Number(id)];
         if (cachedTVShow && cachedTVShow.credits && cachedTVShow.similar) {
           setMovie(cachedTVShow);
-          console.log('TV Show state after cache:', cachedTVShow?.name);
+          setCast(cachedTVShow.credits.cast);
           setSimilarTVShows(cachedTVShow.similar.results);
-          console.log('TV Show details loaded from cache:', cachedTVShow.name);
         } else {
           const tvShowDetails = await getTVShowDetails(Number(id));
           setMovie(tvShowDetails);
-          console.log('TV Show state after API fetch:', tvShowDetails?.name);
           setCast(tvShowDetails.credits.cast);
           setSimilarTVShows(tvShowDetails.similar.results);
           setCache({
             tvShowDetails: { ...getCache().tvShowDetails, [Number(id)]: tvShowDetails },
           });
-          console.log('TV Show details fetched from API:', tvShowDetails.name);
         }
       } catch (error) {
-        console.error("Error fetching movie details:", error);
+        console.error("Error fetching TV show details:", error);
       } finally {
         setLoading(false);
-        console.log('setLoading(false) called');
       }
     };
     fetchDetails();
   }, [id]);
-
-  console.log('Rendering MovieDetails, loading:', loading, 'movie:', movie?.title);
 
   if (loading) {
     return (
@@ -111,8 +105,6 @@ function Details(props) {
     );
   }
 
-    console.log('Rendering TVShowDetails, loading:', loading, 'tvShow:', movie?.name);
-
   if (!movie) {
     return (
       <SafeAreaView style={styles.loadingContainer}>
@@ -121,20 +113,10 @@ function Details(props) {
     );
   }
 
-  console.log('Before !movie check, tvShow:', movie?.name, 'loading:', loading);
-  if (!movie) {
-    return (
-      <SafeAreaView style={styles.loadingContainer}>
-        <Text style={styles.errorText}>Movie not found.</Text>
-      </SafeAreaView>
-    );
-  }
-
   return (
-    console.log('Rendering main movie details view'),
     <View style={styles.container}>
       <ScrollView style={{ flex: 1 }} contentContainerStyle={styles.scrollContentContainer}>
-                <View style={styles.posterContainer}>
+        <View style={styles.posterContainer}>
           {/* <SharedElement id={`item.${movie?.id}.poster`}> */}
             <Image
               source={{ uri: `https://image.tmdb.org/t/p/w500${movie?.poster_path}` }}
@@ -215,7 +197,7 @@ function Details(props) {
       </View>
     </View>
   );
-}
+};
 
 Details.sharedElements = (route) => {
   const { id } = route.params;

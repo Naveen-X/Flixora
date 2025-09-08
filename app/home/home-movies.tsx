@@ -1,12 +1,12 @@
-import { SharedElement } from 'react-navigation-shared-element';
-import React, { useEffect, useState, useRef, useCallback } from 'react';
-import { View, Text, FlatList, TouchableOpacity, StyleSheet, Dimensions, ActivityIndicator } from 'react-native';
-import { Image } from 'expo-image';
-import { getTrendingMovies, getMovieGenres, getMoviesByGenre } from '../../utils/tmdbApi';
-import { Link } from 'expo-router';
-import { getCache, setCache } from '../../utils/cache';
-import { LinearGradient } from 'expo-linear-gradient';
 import { FontAwesome } from '@expo/vector-icons';
+import { Image } from 'expo-image';
+import { LinearGradient } from 'expo-linear-gradient';
+import { Link } from 'expo-router';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
+import { ActivityIndicator, Dimensions, FlatList, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { SharedElement } from 'react-navigation-shared-element';
+import { getCache, setCache } from '../../utils/cache';
+import { getMovieGenres, getMoviesByGenre, getTrendingMovies } from '../../utils/tmdbApi';
 
 const { width } = Dimensions.get('window');
 
@@ -155,10 +155,7 @@ export default function HomeMovies() {
       <FlatList
         ListHeaderComponent={
           <>
-            <TouchableOpacity onPress={() => { setCache({}); alert('Cache cleared!'); }} style={{ position: 'absolute', top: 10, right: 10, backgroundColor: 'red', padding: 10, borderRadius: 5 }}>
-              <Text style={{ color: 'white' }}>Clear Cache</Text>
-            </TouchableOpacity>
-            <Text style={styles.sectionHeader}>Trending Movies</Text>
+            <Text style={styles.titleHeader}>Movies</Text>
             <FlatList
               ref={flatListRef}
               data={trendingMovies}
@@ -220,6 +217,15 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: '#020617',
   },
+  titleHeader: {
+    fontSize: 24,
+    fontWeight:'bold',
+    color: '#fff',
+    marginLeft: 15,
+    marginTop: 20,
+    textAlign:'center',
+    marginBottom: 10,
+  },
   sectionHeader: {
     fontSize: 22,
     fontWeight: 'bold',
@@ -235,7 +241,7 @@ const styles = StyleSheet.create({
   trendingItem: {
     width: width,
     height: width * (9 / 16),
-    borderRadius: 0,
+    borderRadius: 25,
     overflow: 'hidden',
     position: 'relative',
     elevation: 12,

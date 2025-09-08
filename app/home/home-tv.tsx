@@ -209,13 +209,16 @@ const styles = StyleSheet.create({
   },
   
   headerContainer: {
-    paddingHorizontal: 15,
-    paddingVertical: 10,
+    paddingHorizontal: 0,
+    paddingVertical: 0,
   },
   headerTitle: {
     fontSize: 24,
     fontWeight: 'bold',
     color: '#fff',
+    marginLeft: 15,
+    textAlign:'center',
+    marginBottom: 10,
   },
   genreHeader: {
     fontSize: 22,
@@ -232,7 +235,7 @@ const styles = StyleSheet.create({
   trendingItem: {
     width: width,
     height: width * (9 / 16),
-    borderRadius: 0,
+    borderRadius: 25,
     overflow: 'hidden',
     position: 'relative',
     elevation: 12,
