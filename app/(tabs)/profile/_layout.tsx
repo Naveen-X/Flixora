@@ -4,7 +4,7 @@ import CustomHeader from '../../../components/CustomHeader';
 
 export default function ProfileScreenStack() {
   return (
-    <View style={{ flex: 1, backgroundColor: '#020617' }}>
+    <View style={{ flex: 1, backgroundColor: 'black' }}>
       <Stack screenOptions={{
         contentStyle: { backgroundColor: 'transparent' },
         header: ({ options }) => <CustomHeader title={options.headerTitle} />,

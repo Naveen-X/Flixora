@@ -18,7 +18,7 @@ export default function Favorites() {
   const isWishlistEmpty = currentWishlist.length === 0;
 
   return (
-    <View className="flex-1 bg-slate-950 p-4 pt-16">
+    <View className="flex-1 bg-black p-4 pt-16">
       <Text className="text-white text-3xl font-bold mb-6">My {mode.charAt(0).toUpperCase() + mode.slice(1)} Wishlist</Text>
 
       {isWishlistEmpty ? (

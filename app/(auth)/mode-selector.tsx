@@ -27,7 +27,7 @@ export default function ModeSelector() {
   const randomAnimeImage = animeImages[Math.floor(Math.random() * animeImages.length)];
 
   return (
-    <View className="flex-1 items-center justify-center bg-slate-950 p-4">
+    <View className="flex-1 items-center justify-center bg-black p-4">
       {/* <Text className="text-white text-4xl font-bold mb-10">Choose One</Text> */}
       <View className="flex-row flex-wrap justify-center w-full max-w-lg">
         {modes.map((mode) => (

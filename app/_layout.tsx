@@ -45,8 +45,8 @@ function RootLayoutNav() {
 
   return (
     <>
-      <StatusBar style="light" backgroundColor="#020617" />
-      <SafeAreaView style={{ flex: 1 }} className="bg-slate-950">
+      <StatusBar style="light" backgroundColor="black" />
+      <SafeAreaView style={{ flex: 1 }} className="bg-black">
         <Stack>
           <Stack.Screen name="(auth)/onboarding" options={{ headerShown: false }} />
           <Stack.Screen name="(auth)/mode-selector" options={{ headerShown: false }} />
@@ -55,9 +55,14 @@ function RootLayoutNav() {
           <Stack.Screen name="movies/[id]" options={{ headerShown: false, animation: 'slide_from_right' }} />
           <Stack.Screen name="movies/play/[id]" options={{ headerShown: false, animation: 'slide_from_right' }} />
           <Stack.Screen name="player" options={{ headerShown: false }} />
+          <Stack.Screen name="player/movie" options={{ headerShown: false }} />
+          <Stack.Screen name="player/tv" options={{ headerShown: false }} />
+          <Stack.Screen name="player/anime" options={{ headerShown: false }} />
           <Stack.Screen name="tv" options={{ headerShown: false, animation: 'slide_from_right' }} />
           <Stack.Screen name="tv/[id]" options={{ headerShown: false, animation: 'slide_from_right' }} />
           <Stack.Screen name="tv/play/[id]" options={{ headerShown: false, animation: 'slide_from_right' }} />
+          <Stack.Screen name="anime" options={{ headerShown: false, animation: 'slide_from_right' }} />
+          <Stack.Screen name="anime/[id]" options={{ headerShown: false, animation: 'slide_from_right' }} />
         </Stack>
       </SafeAreaView>
     </>

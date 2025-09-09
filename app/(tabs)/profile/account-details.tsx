@@ -14,7 +14,7 @@ export default function AccountDetails() {
   };
 
   return (
-    <View className="flex-1 bg-slate-950 p-4 pt-16" style={{ backgroundColor: '#020617' }}>
+    <View className="flex-1 bg-black p-4 pt-16" style={{ backgroundColor: 'black' }}>
       <View className="bg-neutral-800 rounded-lg p-4 mb-4">
         <Text className="text-white text-lg mb-2">Name: {name}</Text>
         <Text className="text-white text-lg">Email: {email}</Text>

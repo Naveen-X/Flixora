@@ -46,7 +46,7 @@ export default function SplashScreen() {
         flex: 1,
         justifyContent: "center",
         alignItems: "center",
-        backgroundColor: "#020617",
+        backgroundColor: "black",
       }}
     >
       <Animated.View style={[{ flexDirection: "row" }, containerStyle]}>

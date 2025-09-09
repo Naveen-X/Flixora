@@ -6,7 +6,7 @@ export default function Onboarding() {
   const { setIsLoggedIn } = useAuth();
 
   return (
-    <View className="flex-1 items-center justify-center bg-slate-950 p-4">
+    <View className="flex-1 items-center justify-center bg-black p-4">
       <View className="flex-1 justify-center items-center">
         <Text className="text-white text-5xl font-bold mb-2">Flixora</Text>
         <Text className="text-gray-400 text-lg text-center px-8">

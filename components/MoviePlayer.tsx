@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { ActivityIndicator, ImageBackground, StyleSheet, TouchableWithoutFeedback, View } from "react-native";
 import { WebView } from "react-native-webview";
 
-export default function MoviePlayer({ videoId, type, seasonNumber, episodeNumber, onClose }) {
+export default function MoviePlayer({ videoId, type, seasonNumber, episodeNumber, dub, onClose }) {
   const [loading, setLoading] = useState(true);
   const [showControls, setShowControls] = useState(true);
   const [canGoBack, setCanGoBack] = useState(false);
@@ -19,6 +19,8 @@ export default function MoviePlayer({ videoId, type, seasonNumber, episodeNumber
       url = `https://player.videasy.net/tv/${videoId}/${seasonNumber}/${episodeNumber}`;
     } else if (type === "tv") {
       url = `https://player.videasy.net/tv/${videoId}`;
+    } else if (type === "anime") {
+      url = `https://player.videasy.net/anime/${videoId}/${episodeNumber}?dub=${dub}`;
     }
     setEmbedUrl(url);
   }, [videoId, type, seasonNumber, episodeNumber]); // Re-run when videoId, type, seasonNumber, or episodeNumber changes

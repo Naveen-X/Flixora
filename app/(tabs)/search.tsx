@@ -15,7 +15,7 @@ export default function Search() {
   };
 
   return (
-    <View className="flex-1 bg-slate-950 p-4 pt-16">
+    <View className="flex-1 bg-black p-4 pt-16">
       <View className="flex-row items-center bg-neutral-800 rounded-full px-5 py-2.5 mb-4 border border-neutral-700">
         <Feather name="search" size={20} color="white" className="mr-3" />
         <TextInput

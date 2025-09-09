@@ -6,7 +6,7 @@ export default function CustomHeader({ title }) {
   const router = useRouter();
 
   return (
-    <View style={{ height: 50, backgroundColor: '#020617', flexDirection: 'row', alignItems: 'center', paddingHorizontal: 10 }}>
+    <View style={{ height: 50, backgroundColor: 'black', flexDirection: 'row', alignItems: 'center', paddingHorizontal: 10 }}>
       <TouchableOpacity onPress={() => router.back()} style={{ padding: 5 }}>
         <Feather name="arrow-left" size={24} color="white" />
       </TouchableOpacity>

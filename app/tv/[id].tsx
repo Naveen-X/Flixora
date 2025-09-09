@@ -189,7 +189,7 @@ function Details(props) {
       <View style={styles.playButtonContainer}>
         <TouchableOpacity
           style={styles.playButton}
-          onPress={() => router.push(`/player?id=${id}&type=tv`)}
+          onPress={() => router.push(`/player/tv?id=${id}`)}
         >
           <Play color="white" width={20} height={20} style={styles.playIcon} />
           <Text style={styles.playButtonText}>Play</Text>
@@ -205,8 +205,8 @@ Details.sharedElements = (route) => {
 };
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#020617' },
-  loadingContainer: { flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#020617' },
+  container: { flex: 1, backgroundColor: 'black' },
+  loadingContainer: { flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: 'black' },
   errorText: { color: 'white', fontSize: 18 },
   scrollContentContainer: { paddingBottom: 100 }, // Make space for play button
   posterContainer: { position: 'relative' },
@@ -233,7 +233,7 @@ const styles = StyleSheet.create({
   similarItem: { marginRight: 15, width: 120 },
   similarImage: { width: 120, height: 180, borderRadius: 10 },
   similarTitle: { color: 'white', marginTop: 5, width: 120 },
-  playButtonContainer: { padding: 15, borderTopWidth: 1, borderColor: '#1f2937', backgroundColor: '#020617' },
+  playButtonContainer: { padding: 15, borderTopWidth: 1, borderColor: '#1f2937', backgroundColor: 'black' },
   playButton: { backgroundColor: '#3b82f6', borderRadius: 12, paddingVertical: 14, flexDirection: 'row', alignItems: 'center', justifyContent: 'center' },
   playIcon: { marginRight: 10 },
   playButtonText: { color: 'white', fontSize: 18, fontWeight: 'bold' },
