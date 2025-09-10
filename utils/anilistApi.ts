@@ -44,6 +44,25 @@ export interface Anime {
   averageScore: number;
   episodes: number;
   status: string;
+  startDate: {
+    year: number;
+    month: number;
+    day: number;
+  };
+  endDate: {
+    year: number;
+    month: number;
+    day: number;
+  };
+  season: string;
+  seasonYear: number;
+  source: string;
+  studios: {
+    nodes: {
+      name: string;
+    }[];
+  };
+  format: string;
 }
 
 interface PageData {
@@ -90,6 +109,120 @@ export const getTrendingAnime = async (): Promise<Anime[]> => {
   return data.Page.media;
 };
 
+export const getPopularAnime = async (): Promise<Anime[]> => {
+  const query = `
+    query ($page: Int, $perPage: Int, $sort: [MediaSort]) {
+          Page(page: $page, perPage: $perPage) {
+            media(type: ANIME, sort: $sort) {
+              id
+              title {
+                romaji
+                english
+                native
+              }
+              coverImage {
+                extraLarge
+                large
+                medium
+                color
+              }
+              bannerImage
+              description(asHtml: false)
+              genres
+              averageScore
+              episodes
+              status
+              startDate {
+                year
+                month
+                day
+              }
+              endDate {
+                year
+                month
+                day
+                }
+              season
+              seasonYear
+              source
+              studios {
+                nodes {
+                  name
+                }
+              }
+              format
+            }
+          }
+        } 
+      `;
+
+  const variables = {
+    page: 1,
+    perPage: 20,
+    sort: ['FAVOURITES_DESC'],
+  };
+
+  const { data } = await fetchFromAnilist<PageData>(query, variables);
+  return data.Page.media;
+};
+
+export const getTopRatedAnime = async (): Promise<Anime[]> => {
+  const query = `
+    query ($page: Int, $perPage: Int, $sort: [MediaSort]) {
+          Page(page: $page, perPage: $perPage) {
+            media(type: ANIME, sort: $sort) {
+              id
+              title {
+                romaji
+                english
+                native
+              }
+              coverImage {
+                extraLarge
+                large
+                medium
+                color
+              }
+              bannerImage
+              description(asHtml: false)
+              genres
+              averageScore
+              episodes
+              status
+              startDate {
+                year
+                month
+                day
+              }
+              endDate {
+                year
+                month
+                day
+                }
+              season
+              seasonYear
+              source
+              studios {
+                nodes {
+                  name
+                }
+              }
+              format
+            }
+          }
+        } 
+      `;
+
+  const variables = {
+    page: 1,
+    perPage: 20,
+    sort: ['SCORE_DESC'],
+  };
+
+  const { data } = await fetchFromAnilist<PageData>(query, variables);
+  return data.Page.media;
+};
+
 export const getAnimeDetails = async (id: number): Promise<Anime> => {
   const query = `
     query ($id: Int) {
@@ -112,6 +245,25 @@ export const getAnimeDetails = async (id: number): Promise<Anime> => {
         averageScore
         episodes
         status
+        startDate {
+          year
+          month
+          day
+        }
+        endDate {
+          year
+          month
+          day
+        }
+        season
+        seasonYear
+        source
+        studios {
+          nodes {
+            name
+          }
+        }
+        format
       }
     }
   `;

@@ -45,7 +45,7 @@ function RootLayoutNav() {
 
   return (
     <>
-      <StatusBar style="light" backgroundColor="black" />
+      <StatusBar hidden={true} />
       <SafeAreaView style={{ flex: 1 }} className="bg-black">
         <Stack>
           <Stack.Screen name="(auth)/onboarding" options={{ headerShown: false }} />

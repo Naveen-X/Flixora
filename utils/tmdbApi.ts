@@ -11,6 +11,14 @@ interface Movie {
   overview: string;
 }
 
+interface TVShow { // Added TVShow interface
+  id: number;
+  name: string;
+  poster_path: string;
+  backdrop_path: string;
+  overview: string;
+}
+
 interface Genre {
   id: number;
   name: string;
@@ -104,4 +112,14 @@ export const getTVEpisodeDetails = async (tvShowId: number, seasonNumber: number
 export const getSeasonDetails = async (tvShowId: number, seasonNumber: number) => {
   const data = await fetchFromTmdb(`/tv/${tvShowId}/season/${seasonNumber}`);
   return data;
+};
+
+export const searchMovies = async (query: string): Promise<Movie[]> => {
+  const data = await fetchFromTmdb(`/search/movie?query=${encodeURIComponent(query)}`);
+  return data?.results || [];
+};
+
+export const searchTVShows = async (query: string): Promise<TVShow[]> => {
+  const data = await fetchFromTmdb(`/search/tv?query=${encodeURIComponent(query)}`);
+  return data?.results || [];
 };

@@ -24,18 +24,20 @@ function ModeSwitcher() {
         showsHorizontalScrollIndicator={false}
         contentContainerClassName="px-4"
       >
-        {modes.map((mode) => (
-          <TouchableOpacity
-            key={mode.id}
-            className="items-center mr-4"
-            onPress={() => handleModeSelect(mode.id)}
-          >
-            <View className={`w-24 h-24 rounded-full border-2 ${activeMode === mode.id ? 'border-blue-500' : 'border-transparent'} justify-center items-center`}>
-              <Image source={mode.image} className="w-20 h-20 rounded-full" />
-            </View>
-            <Text className={`text-white text-lg mt-2 ${activeMode === mode.id ? 'font-bold' : ''}`}>{mode.name}</Text>
-          </TouchableOpacity>
-        ))}
+        {modes
+          .filter((mode) => mode.id !== activeMode) // Filter out the active mode
+          .map((mode) => (
+            <TouchableOpacity
+              key={mode.id}
+              className="items-center mr-4"
+              onPress={() => handleModeSelect(mode.id)}
+            >
+              <View className={`w-24 h-24 rounded-full border-2 ${activeMode === mode.id ? 'border-blue-500' : 'border-transparent'} justify-center items-center`}>
+                <Image source={mode.image} className="w-20 h-20 rounded-full" />
+              </View>
+              <Text className={`text-white text-lg mt-2 ${activeMode === mode.id ? 'font-bold' : ''}`}>{mode.name}</Text>
+            </TouchableOpacity>
+          ))}
       </ScrollView>
     </View>
   );

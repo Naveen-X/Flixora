@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { ActivityIndicator, ImageBackground, StyleSheet, TouchableWithoutFeedback, View } from "react-native";
 import { WebView } from "react-native-webview";
 
-export default function MoviePlayer({ videoId, type, seasonNumber, episodeNumber, dub, onClose }) {
+export default function MoviePlayer({ videoId, type, seasonNumber, episodeNumber, dub, onClose, sourceType = 'videasy', vidlinkProVariant = 'default' }) {
   const [loading, setLoading] = useState(true);
   const [showControls, setShowControls] = useState(true);
   const [canGoBack, setCanGoBack] = useState(false);
@@ -11,19 +11,39 @@ export default function MoviePlayer({ videoId, type, seasonNumber, episodeNumber
   const webViewRef = useRef(null);
 
   useEffect(() => {
-    // Construct the videasy embed URL
     let url = "";
-    if (type === "movie") {
-      url = `https://player.videasy.net/movie/${videoId}`;
-    } else if (type === "tv" && seasonNumber && episodeNumber) {
-      url = `https://player.videasy.net/tv/${videoId}/${seasonNumber}/${episodeNumber}`;
-    } else if (type === "tv") {
-      url = `https://player.videasy.net/tv/${videoId}`;
-    } else if (type === "anime") {
-      url = `https://player.videasy.net/anime/${videoId}/${episodeNumber}?dub=${dub}`;
+    if (sourceType === 'videasy') {
+      if (type === "movie") {
+        url = `https://player.videasy.net/movie/${videoId}`;
+      } else if (type === "tv" && seasonNumber && episodeNumber) {
+        url = `https://player.videasy.net/tv/${videoId}/${seasonNumber}/${episodeNumber}`;
+      } else if (type === "tv") {
+        url = `https://player.videasy.net/tv/${videoId}`;
+      } else if (type === "anime") {
+        url = `https://player.videasy.net/anime/${videoId}/${episodeNumber}?dub=${dub}`;
+      }
+    } else if (sourceType === 'vidlink') {
+      let baseUrl = "";
+      if (type === "movie") {
+        baseUrl = `https://vidlink.pro/movie/${videoId}`;
+      } else if (type === "tv" && seasonNumber && episodeNumber) {
+        baseUrl = `https://vidlink.pro/tv/${videoId}/${seasonNumber}/${episodeNumber}`;
+      }
+      // For anime, vidlink.pro requires MALid, which is not available here.
+      // If anime type is selected with vidlink, it will not generate a URL.
+
+      if (baseUrl) {
+        if (vidlinkProVariant === 'custom') {
+          // Example custom parameters for JWPlayer-like appearance
+          // These are just examples, actual appearance depends on vidlink.pro's player
+          url = `${baseUrl}?primaryColor=B20710&secondaryColor=170000&icons=default`;
+        } else {
+          url = baseUrl;
+        }
+      }
     }
     setEmbedUrl(url);
-  }, [videoId, type, seasonNumber, episodeNumber]); // Re-run when videoId, type, seasonNumber, or episodeNumber changes
+  }, [videoId, type, seasonNumber, episodeNumber, sourceType, vidlinkProVariant]); // Add vidlinkProVariant to dependencies
 
   useEffect(() => {
     return () => {
@@ -85,7 +105,7 @@ export default function MoviePlayer({ videoId, type, seasonNumber, episodeNumber
             startInLoadingState
             onLoadEnd={() => setLoading(false)}
             onShouldStartLoadWithRequest={(req) => {
-              if (req.url.startsWith("https://player.videasy.net")) {
+              if (req.url.startsWith("https://player.videasy.net") || req.url.startsWith("https://vidlink.pro")) {
                 return true;
               }
               return false;

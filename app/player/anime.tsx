@@ -12,6 +12,8 @@ export default function AnimePlayerPage() {
   const [loading, setLoading] = useState(true);
   const [selectedEpisode, setSelectedEpisode] = useState(Number(episode) || 1);
   const [isDub, setIsDub] = useState(dub === 'true');
+  const [currentPage, setCurrentPage] = useState(1);
+  const episodesPerPage = 10; // You can adjust this number
 
   useEffect(() => {
     const fetchDetails = async () => {
@@ -73,20 +75,45 @@ export default function AnimePlayerPage() {
 
           <View style={styles.infoSection}>
               <Text style={styles.infoLabel}>Episodes</Text>
-              <FlatList
-                  data={episodes}
-                  renderItem={({ item }) => (
-                      <TouchableOpacity 
-                        style={[styles.episodeButton, selectedEpisode === item && styles.episodeButtonActive]} 
-                        onPress={() => setSelectedEpisode(item)}
-                      >
-                          <Text style={styles.episodeText}>Episode {item}</Text>
-                      </TouchableOpacity>
-                  )}
-                  keyExtractor={(item) => item.toString()}
-                  horizontal
-                  showsHorizontalScrollIndicator={false}
-              />
+              {episodes.length > 0 ? (
+                <>
+                  <FlatList
+                      data={episodes.slice((currentPage - 1) * episodesPerPage, currentPage * episodesPerPage)}
+                      renderItem={({ item }) => (
+                          <TouchableOpacity
+                            style={[styles.episodeButton, selectedEpisode === item && styles.episodeButtonActive]}
+                            onPress={() => setSelectedEpisode(item)}
+                          >
+                              <Text style={styles.episodeText}>Episode {item}</Text>
+                          </TouchableOpacity>
+                      )}
+                      keyExtractor={(item) => item.toString()}
+                      numColumns={3} // Display in columns for better layout
+                      showsVerticalScrollIndicator={false}
+                      contentContainerStyle={styles.episodeListContainer} // Add style for padding
+                  />
+                  {/* Pagination Controls */}
+                  <View style={styles.paginationContainer}>
+                    <TouchableOpacity
+                      style={[styles.paginationButton, currentPage === 1 && styles.paginationButtonDisabled]}
+                      onPress={() => setCurrentPage(prev => Math.max(1, prev - 1))}
+                      disabled={currentPage === 1}
+                    >
+                      <Text style={styles.paginationButtonText}>Previous</Text>
+                    </TouchableOpacity>
+                    <Text style={styles.paginationText}>{currentPage} / {Math.ceil(episodes.length / episodesPerPage)}</Text>
+                    <TouchableOpacity
+                      style={[styles.paginationButton, currentPage * episodesPerPage >= episodes.length && styles.paginationButtonDisabled]}
+                      onPress={() => setCurrentPage(prev => prev + 1)}
+                      disabled={currentPage * episodesPerPage >= episodes.length}
+                    >
+                      <Text style={styles.paginationButtonText}>Next</Text>
+                    </TouchableOpacity>
+                  </View>
+                </>
+              ) : (
+                <Text style={styles.errorText}>No episodes found.</Text>
+              )}
           </View>
         </View>
       )}
@@ -108,4 +135,10 @@ const styles = StyleSheet.create({
     episodeButton: { backgroundColor: '#333', padding: 15, borderRadius: 10, marginRight: 10 },
     episodeButtonActive: { backgroundColor: '#3b82f6' },
     episodeText: { color: 'white' },
+    episodeListContainer: { paddingBottom: 20 },
+    paginationContainer: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginTop: 20, paddingHorizontal: 15 },
+    paginationButton: { backgroundColor: '#3b82f6', paddingHorizontal: 15, paddingVertical: 8, borderRadius: 10 },
+    paginationButtonDisabled: { backgroundColor: '#333' },
+    paginationButtonText: { color: 'white', fontWeight: 'bold' },
+    paginationText: { color: 'white', fontSize: 16 },
 });

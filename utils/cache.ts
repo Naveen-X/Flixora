@@ -5,6 +5,9 @@ interface CacheData {
   tvShowDetails: { [key: number]: any };
   trendingTVShows: any[];
   tvGenreSections: any[];
+  trendingAnime: any[];
+  popularAnime: any[];
+  topRatedAnime: any[];
 }
 
 let appCache: CacheData = {
@@ -14,6 +17,9 @@ let appCache: CacheData = {
   tvShowDetails: {},
   trendingTVShows: [],
   tvGenreSections: [],
+  trendingAnime: [],
+  popularAnime: [],
+  topRatedAnime: [],
 };
 
 export const setCache = (data: Partial<CacheData>) => {
@@ -32,5 +38,8 @@ export const clearCache = () => {
     tvShowDetails: {},
     trendingTVShows: [],
     tvGenreSections: [],
+    trendingAnime: [],
+    popularAnime: [],
+    topRatedAnime: [],
   };
 };

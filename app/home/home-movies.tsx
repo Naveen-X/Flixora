@@ -144,8 +144,62 @@ export default function HomeMovies() {
 
   if (loading) {
     return (
-      <View style={styles.loadingContainer}>
-        <ActivityIndicator size="large" color="#888" />
+      <View style={styles.container}>
+        {/* Skeleton for Title Header */}
+        <View style={[styles.titleHeader, { backgroundColor: '#333', width: '50%', height: 30, borderRadius: 4, marginBottom: 20 }]} />
+
+        {/* Skeleton for Trending Movies */}
+        <FlatList
+          data={[1, 2]} // Dummy data for skeleton items
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          snapToInterval={width}
+          decelerationRate="fast"
+          contentContainerStyle={{ paddingHorizontal: 0 }}
+          renderItem={() => (
+            <View style={[styles.trendingItem, { backgroundColor: '#333' }]}>
+              <View style={[styles.trendingBackdrop, { backgroundColor: '#444' }]} />
+              <View style={styles.trendingOverlay}>
+                <View style={{ width: '70%', height: 24, backgroundColor: '#555', marginBottom: 10, borderRadius: 4 }} />
+                <View style={{ width: '30%', height: 18, backgroundColor: '#555', borderRadius: 4 }} />
+              </View>
+            </View>
+          )}
+          keyExtractor={(item, index) => index.toString()}
+          style={{ height: width * (9 / 16) + 20 }} // Added fixed height
+        />
+        {/* Skeleton for Pager Dots */}
+        <View style={styles.pagerContainer}>
+          {[1, 2, 3].map((_, index) => (
+            <View
+              key={index}
+              style={[styles.pagerDot, { backgroundColor: '#555' }]}
+            />
+          ))}
+        </View>
+
+        {/* Skeleton for Genre Sections */}
+        {[1, 2, 3].map((sectionIndex) => (
+          <View key={sectionIndex} style={styles.genreSection}>
+            <View style={[styles.sectionHeader, { backgroundColor: '#333', width: '60%', height: 25, borderRadius: 4, marginBottom: 10 }]} />
+            <FlatList
+              data={[1, 2, 3, 4]} // Dummy data for skeleton movie items
+              horizontal
+              showsHorizontalScrollIndicator={false}
+              contentContainerStyle={styles.genreMovieListContainer}
+              renderItem={() => (
+                <View style={[styles.movieItem, { backgroundColor: '#333' }]}>
+                  <View style={[styles.poster, { backgroundColor: '#444' }]} />
+                  <View style={styles.movieTextContainer}>
+                    <View style={{ width: '80%', height: 16, backgroundColor: '#555', marginBottom: 5, borderRadius: 4 }} />
+                    <View style={{ width: '40%', height: 14, backgroundColor: '#555', borderRadius: 4 }} />
+                  </View>
+                </View>
+              )}
+              keyExtractor={(item, index) => index.toString()}
+            />
+          </View>
+        ))}
       </View>
     );
   }
