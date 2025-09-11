@@ -4,7 +4,7 @@
     "slug": "Flixora",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/images/flixora.jpg",
+    "icon": "./assets/images/flixora.png",
     "scheme": "flixora",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
@@ -13,7 +13,7 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/images/flixora.jpg",
+        "foregroundImage": "./assets/images/flixora.png",
         "backgroundColor": "#000000"
       },
       "edgeToEdgeEnabled": true,
