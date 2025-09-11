@@ -4,6 +4,7 @@ import { ActivityIndicator, FlatList, Image, Text, TextInput, TouchableOpacity, 
 import { useMode } from "../../context/ModeContext";
 import { searchMovies, searchTVShows } from "../../utils/tmdbApi";
 import { searchAnime } from "../../utils/anilistApi";
+import { searchManga } from "../../utils/mangaApi";
 import { useRouter } from "expo-router";
 
 export default function Search() {
@@ -12,6 +13,7 @@ export default function Search() {
   const [movieResults, setMovieResults] = useState<any[]>([]);
   const [tvResults, setTvResults] = useState<any[]>([]);
   const [animeResults, setAnimeResults] = useState<any[]>([]);
+  const [mangaResults, setMangaResults] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
   const { mode } = useMode();
   const router = useRouter();
@@ -21,6 +23,7 @@ export default function Search() {
       setMovieResults([]);
       setTvResults([]);
       setAnimeResults([]);
+      setMangaResults([]);
       setLastSearchedText('');
       return;
     }
@@ -30,6 +33,7 @@ export default function Search() {
     setMovieResults([]); // Clear previous results
     setTvResults([]);
     setAnimeResults([]);
+    setMangaResults([]);
 
     try {
       if (mode === 'movies') {
@@ -41,6 +45,9 @@ export default function Search() {
       } else if (mode === 'anime') {
         const results = await searchAnime(searchText);
         setAnimeResults(results);
+      } else if (mode === 'manga') {
+        const results = await searchManga(searchText);
+        setMangaResults(results);
       }
     } catch (error) {
       console.error("Error during search:", error);
@@ -162,7 +169,35 @@ export default function Search() {
                   )}
                 />
               )}
-              {(movieResults.length === 0 && tvResults.length === 0 && animeResults.length === 0 && lastSearchedText) && (
+              {mode === 'manga' && mangaResults.length > 0 && (
+                <FlatList
+                  data={mangaResults}
+                  keyExtractor={(item) => item.id.toString()}
+                  numColumns={3}
+                  showsVerticalScrollIndicator={false}
+                  contentContainerStyle={{ paddingBottom: 20 }}
+                  renderItem={({ item }) => {
+                    const coverArt = item.relationships.find(rel => rel.type === 'cover_art');
+                    const coverUrl = coverArt ? `https://uploads.mangadex.org/covers/${item.id}/${coverArt.attributes?.fileName}` : 'https://via.placeholder.com/150';
+                    return (
+                      <TouchableOpacity
+                        className="flex-1 m-1"
+                        onPress={() => router.push(`/manga/${item.id}`)}
+                      >
+                        <Image
+                          source={{ uri: coverUrl }}
+                          className="w-full h-48 rounded-lg"
+                        />
+                        <Text className="text-white text-sm mt-1 text-center" numberOfLines={2}>{item.attributes.title.en}</Text>
+                      </TouchableOpacity>
+                    )
+                  }}
+                  ListHeaderComponent={() => (
+                    <Text className="text-white text-xl font-bold mb-4">Manga</Text>
+                  )}
+                />
+              )}
+              {(movieResults.length === 0 && tvResults.length === 0 && animeResults.length === 0 && mangaResults.length === 0 && lastSearchedText) && (
                 <View className="flex-1 justify-center items-center">
                   <Text className="text-gray-400 text-lg">No results found for "{lastSearchedText}" in {mode}.</Text>
                 </View>

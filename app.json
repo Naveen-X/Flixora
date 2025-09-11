@@ -16,7 +16,8 @@
         "foregroundImage": "./assets/images/flixora.jpg",
         "backgroundColor": "#000000"
       },
-      "edgeToEdgeEnabled": true
+      "edgeToEdgeEnabled": true,
+      "package": "com.xd.flixora"
     },
     "web": {
       "bundler": "metro",
@@ -39,7 +40,11 @@
       "typedRoutes": true
     },
     "extra": {
-      "tmdbApiKey": "eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI4NjllZDBjOTUxOWY0Y2MwZTJhOWYwYTE0ZTEwYzUyNyIsIm5iZiI6MTc1NDc1NjkzNC4zMTgsInN1YiI6IjY4OTc3NzQ2OTBhNTIwOGE3ZTI2Nzg1ZSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.wtHVHR44BL3hUAAHB46sYipcGm4CppGLQcNlTGQKcuE"
+      "tmdbApiKey": "eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI4NjllZDBjOTUxOWY0Y2MwZTJhOWYwYTE0ZTEwYzUyNyIsIm5iZiI6MTc1NDc1NjkzNC4zMTgsInN1YiI6IjY4OTc3NzQ2OTBhNTIwOGE3ZTI2Nzg1ZSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.wtHVHR44BL3hUAAHB46sYipcGm4CppGLQcNlTGQKcuE",
+      "router": {},
+      "eas": {
+        "projectId": "86de4b7d-f32c-433d-8cb1-0c59a595e20b"
+      }
     }
   }
 }
