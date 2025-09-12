@@ -11,7 +11,7 @@ export default function Profile() {
   const userProfile = {
     name: "Test Mail",
     email: "testmail@gmail.com",
-    profilePic: require("../../../assets/images/flixora.jpg"), // Placeholder image
+    profilePic: require("../../../assets/images/flixora.png"), // Placeholder image
   };
 
   const settingsOptions = [

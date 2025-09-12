@@ -1,6 +1,6 @@
 import { useLocalSearchParams, useRouter } from "expo-router";
 import React from 'react';
-import { Text, TouchableOpacity, View } from 'react-native';
+import { Text, TouchableOpacity, View, Alert } from 'react-native';
 
 export default function AccountDetails() {
   const router = useRouter();
@@ -9,8 +9,14 @@ export default function AccountDetails() {
 
   const handleLogout = () => {
     console.log("Logging out...");
-    // Implement logout logic here
+    // Implement actual logout logic here (e.g., clear tokens, navigate to login)
+    Alert.alert("Logout", "You have been logged out.");
     router.replace('/profile'); // Go back to profile root after logout
+  };
+
+  const handleEditProfile = () => {
+    Alert.alert("Edit Profile", "This feature is not yet implemented.");
+    // In a real app, you would navigate to an edit profile screen
   };
 
   return (
@@ -19,11 +25,19 @@ export default function AccountDetails() {
         <Text className="text-white text-lg mb-2">Name: {name}</Text>
         <Text className="text-white text-lg">Email: {email}</Text>
       </View>
+
       <TouchableOpacity
-        className="bg-white p-4 rounded-lg items-center"
+        className="bg-blue-600 p-4 rounded-lg items-center mb-4"
+        onPress={handleEditProfile}
+      >
+        <Text className="text-white text-lg font-semibold">Edit Profile</Text>
+      </TouchableOpacity>
+
+      <TouchableOpacity
+        className="bg-red-600 p-4 rounded-lg items-center"
         onPress={handleLogout}
       >
-        <Text className="text-black text-lg font-semibold">Logout</Text>
+        <Text className="text-white text-lg font-semibold">Logout</Text>
       </TouchableOpacity>
     </View>
   );
