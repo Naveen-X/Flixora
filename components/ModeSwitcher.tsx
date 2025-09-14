@@ -1,12 +1,13 @@
 import React from 'react';
-import { Image, ScrollView, Text, TouchableOpacity, View } from 'react-native';
+import { ScrollView, Text, TouchableOpacity, View } from 'react-native';
+import { Book, Film, Monitor, Tv } from 'react-native-feather';
 import { useMode } from '../context/ModeContext';
 
 const modes = [
-  { id: 'movies', name: 'Movies', image: require('../assets/images/react-logo.png') },
-  { id: 'tv', name: 'TV Shows', image: require('../assets/images/react-logo.png') },
-  { id: 'anime', name: 'Anime', image: require('../assets/images/anime/anime-1.jpg') },
-  { id: 'manga', name: 'Manga', image: require('../assets/images/anime/anime-2.jpg') },
+  { id: 'movies', name: 'Movies', icon: Film },
+  { id: 'tv', name: 'TV Shows', icon: Tv },
+  { id: 'anime', name: 'Anime', icon: Monitor },
+  { id: 'manga', name: 'Manga', icon: Book },
 ];
 
 function ModeSwitcher() {
@@ -32,10 +33,10 @@ function ModeSwitcher() {
               className="items-center mr-4"
               onPress={() => handleModeSelect(mode.id)}
             >
-              <View className={`w-24 h-24 rounded-full border-2 ${activeMode === mode.id ? 'border-blue-500' : 'border-transparent'} justify-center items-center`}>
-                <Image source={mode.image} className="w-20 h-20 rounded-full" />
+              <View className={`w-24 h-24 rounded-lg border-2 border-gray-700 justify-center items-center`}>
+                                {React.createElement(mode.icon, { color: "white", width: 48, height: 48 })}
               </View>
-              <Text className={`text-white text-lg mt-2 ${activeMode === mode.id ? 'font-bold' : ''}`}>{mode.name}</Text>
+              <Text className={`text-white text-xs mt-2 ${activeMode === mode.id ? 'font-bold' : ''}`}>{mode.name}</Text>
             </TouchableOpacity>
           ))}
       </ScrollView>

@@ -25,6 +25,7 @@ interface Genre {
 }
 
 const fetchFromTmdb = async (endpoint: string) => {
+  console.log("TMDB_API_KEY:", TMDB_API_KEY);
   try {
     const response = await fetch(`${BASE_URL}${endpoint}`, {
       headers: {
@@ -65,6 +66,7 @@ export const getMoviesByGenre = async (genreId: number): Promise<Movie[]> => {
 };
 
 export const getMovieDetails = async (movieId: number) => {
+  console.log("getMovieDetails called for movieId:", movieId);
   const data = await fetchFromTmdb(`/movie/${movieId}?append_to_response=credits,similar`);
   return data;
 };

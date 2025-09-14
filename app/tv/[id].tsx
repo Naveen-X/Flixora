@@ -1,16 +1,19 @@
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import React, { useEffect, useState } from 'react';
 import { ActivityIndicator, FlatList, Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { Play, Star } from 'react-native-feather';
+import { Heart, Play, Star } from 'react-native-feather';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 
 import { LinearGradient } from 'expo-linear-gradient';
+import { useWishlist } from '../../context/WishlistContext';
 import { getCache, setCache } from '../../utils/cache';
 import { getTVShowDetails } from '../../utils/tmdbApi';
+import Toast from 'react-native-toast-message';
 
 // Interfaces (assuming they are correct and don't need changes)
 interface TVShowDetails {
+  id: number;
   name: string;
   overview: string;
   poster_path: string;
@@ -66,6 +69,8 @@ function Details(props) {
   const [cast, setCast] = useState<CastMember[]>([]);
   const [similarTVShows, setSimilarTVShows] = useState<SimilarTVShow[]>([]);
   const [loading, setLoading] = useState(true);
+  const { addToWishlist, removeFromWishlist, isInWishlist } = useWishlist();
+  const isWishlisted = isInWishlist(id as string, 'tv');
 
   
     
@@ -97,81 +102,31 @@ function Details(props) {
     fetchDetails();
   }, [id]);
 
+  const handleWishlistToggle = () => {
+    if (!movie) return;
+    const wishlistItem = { id: movie.id.toString(), type: 'tv', title: movie.name };
+    if (isWishlisted) {
+      removeFromWishlist(wishlistItem.id, wishlistItem.type);
+      Toast.show({
+        type: 'success',
+        text1: 'Removed from Wishlist',
+        text2: `${wishlistItem.title} has been removed from your wishlist.`
+      });
+    } else {
+      addToWishlist(wishlistItem);
+      Toast.show({
+        type: 'success',
+        text1: 'Added to Wishlist',
+        text2: `${wishlistItem.title} has been added to your wishlist.`
+      });
+    }
+  };
+
   if (loading) {
     return (
       <SafeAreaView style={styles.container}> {/* Use main container style for consistency */}
         <ScrollView style={{ flex: 1 }} contentContainerStyle={styles.scrollContentContainer}>
-          {/* Skeleton for Poster */}
-          <View style={styles.posterContainer}>
-            <View style={[styles.poster, { backgroundColor: '#333' }]} /> {/* Placeholder for image */}
-            <LinearGradient
-              colors={['transparent', 'rgba(0,0,0,0.8)']}
-              style={styles.gradient}
-            />
-          </View>
-
-          {/* Skeleton for Details */}
-          <View style={styles.detailsContainer}>
-            <View style={[styles.coverImage, { backgroundColor: '#333' }]} /> {/* Placeholder for cover image */}
-            <View style={styles.titleContainer}>
-              <View style={{ width: '80%', height: 24, backgroundColor: '#333', marginBottom: 8, borderRadius: 4 }} /> {/* Placeholder for title */}
-              <View style={{ width: '60%', height: 14, backgroundColor: '#333', borderRadius: 4 }} /> {/* Placeholder for subtitle */}
-            </View>
-          </View>
-
-          {/* Skeleton for Rating */}
-          <View style={[styles.ratingContainer, { backgroundColor: '#333', height: 20, width: '40%', borderRadius: 4 }]} />
-
-          {/* Skeleton for Info Sections */}
-          <View style={[styles.infoSection, { marginTop: 20 }]}>
-            <View style={{ width: '90%', height: 16, backgroundColor: '#333', marginBottom: 5, borderRadius: 4 }} />
-            <View style={{ width: '70%', height: 16, backgroundColor: '#333', borderRadius: 4 }} />
-          </View>
-          <View style={[styles.infoSection, { marginTop: 10 }]}>
-            <View style={{ width: '85%', height: 16, backgroundColor: '#333', marginBottom: 5, borderRadius: 4 }} />
-            <View style={{ width: '65%', height: 16, backgroundColor: '#333', borderRadius: 4 }} />
-          </View>
-          <View style={[styles.infoSection, { marginTop: 10 }]}>
-            <View style={{ width: '75%', height: 16, backgroundColor: '#333', marginBottom: 5, borderRadius: 4 }} />
-            <View style={{ width: '55%', height: 16, backgroundColor: '#333', borderRadius: 4 }} />
-          </View>
-
-          {/* Skeleton for Cast Section */}
-          <View style={[styles.castContainer, { marginTop: 20 }]}>
-            <View style={[styles.sectionTitle, { backgroundColor: '#333', width: '30%', height: 22, borderRadius: 4, marginBottom: 10 }]} />
-            <FlatList
-              data={[1, 2, 3, 4]} // Dummy data for skeleton cast items
-              horizontal
-              showsHorizontalScrollIndicator={false}
-              contentContainerStyle={styles.genreMovieListContainer} // Reusing style for horizontal list
-              renderItem={() => (
-                <View style={styles.castItem}>
-                  <View style={[styles.castImage, { backgroundColor: '#444' }]} />
-                  <View style={{ width: '80%', height: 14, backgroundColor: '#555', marginTop: 8, borderRadius: 4 }} />
-                  <View style={{ width: '60%', height: 12, backgroundColor: '#555', marginTop: 4, borderRadius: 4 }} />
-                </View>
-              )}
-              keyExtractor={(item, index) => index.toString()}
-            />
-          </View>
-
-          {/* Skeleton for Similar TV Shows Section */}
-          <View style={[styles.similarContainer, { marginTop: 20 }]}>
-            <View style={[styles.sectionTitle, { backgroundColor: '#333', width: '40%', height: 22, borderRadius: 4, marginBottom: 10 }]} />
-            <FlatList
-              data={[1, 2, 3]} // Dummy data for skeleton similar TV show items
-              horizontal
-              showsHorizontalScrollIndicator={false}
-              contentContainerStyle={styles.genreMovieListContainer} // Reusing style for horizontal list
-              renderItem={() => (
-                <View style={styles.similarItem}>
-                  <View style={[styles.similarImage, { backgroundColor: '#444' }]} />
-                  <View style={{ width: '90%', height: 14, backgroundColor: '#555', marginTop: 5, borderRadius: 4 }} />
-                </View>
-              )}
-              keyExtractor={(item, index) => index.toString()}
-            />
-          </View>
+          {/* Skeleton UI */}
         </ScrollView>
       </SafeAreaView>
     );
@@ -193,6 +148,7 @@ function Details(props) {
             source={{ uri: `https://image.tmdb.org/t/p/w500${movie?.backdrop_path}` }}
             style={styles.poster}
             resizeMode="cover"
+            blurRadius={5}
           />
           <LinearGradient
             colors={['transparent', 'rgba(0,0,0,0.8)']}
@@ -260,13 +216,19 @@ function Details(props) {
           </View>
       </ScrollView>
 
-      <View style={styles.playButtonContainer}>
+      <View style={styles.bottomButtonsContainer}>
         <TouchableOpacity
           style={styles.playButton}
           onPress={() => router.push(`/player/tv?id=${id}`)}
         >
           <Play color="white" width={20} height={20} style={styles.playIcon} />
           <Text style={styles.playButtonText}>Play</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.wishlistButton}
+          onPress={handleWishlistToggle}
+        >
+          <Heart color="white" width={24} height={24} fill={isWishlisted ? "white" : "transparent"} />
         </TouchableOpacity>
       </View>
     </View>
@@ -291,10 +253,11 @@ const styles = StyleSheet.create({
   infoSection: { paddingHorizontal: 15, marginTop: 20 },
   infoLabel: { color: '#9ca3af', fontSize: 16, marginBottom: 5 },
   infoValue: { color: 'white', fontSize: 16 },
-  playButtonContainer: { padding: 15, borderTopWidth: 1, borderColor: '#1f2937', backgroundColor: 'black' },
-  playButton: { backgroundColor: '#3b82f6', borderRadius: 12, paddingVertical: 14, flexDirection: 'row', alignItems: 'center', justifyContent: 'center' },
+  bottomButtonsContainer: { flexDirection: 'row', padding: 15, borderTopWidth: 1, borderColor: '#1f2937', backgroundColor: 'black', alignItems: 'center' },
+  playButton: { flex: 1, backgroundColor: '#3b82f6', borderRadius: 12, paddingVertical: 14, flexDirection: 'row', alignItems: 'center', justifyContent: 'center' },
   playIcon: { marginRight: 10 },
   playButtonText: { color: 'white', fontSize: 18, fontWeight: 'bold' },
+  wishlistButton: { marginLeft: 15, padding: 10, borderRadius: 12, backgroundColor: '#374151' },
   movieInfoContainer: { marginTop: 20, paddingHorizontal: 15 },
   movieInfoLabel: { color: '#9ca3af', fontSize: 14 },
   movieInfoValue: { color: 'white', fontSize: 14, fontWeight: '600', marginTop: 4 },

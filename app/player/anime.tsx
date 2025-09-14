@@ -1,9 +1,9 @@
 
 import { useLocalSearchParams, useRouter } from "expo-router";
 import React, { useEffect, useState } from "react";
-import { ActivityIndicator, FlatList, Text, TouchableOpacity, View, StyleSheet } from "react-native";
+import { ActivityIndicator, FlatList, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import MoviePlayer from "../../components/MoviePlayer";
-import { getAnimeDetails, Anime } from "../../utils/anilistApi";
+import { Anime, getAnimeDetails } from "../../utils/anilistApi";
 
 export default function AnimePlayerPage() {
   const router = useRouter();

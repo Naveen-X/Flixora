@@ -1,5 +1,5 @@
-import { Text, View, ScrollView, Linking, TouchableOpacity } from "react-native";
 import { Feather } from "@expo/vector-icons";
+import { Linking, ScrollView, Text, TouchableOpacity, View } from "react-native";
 
 export default function Credits() {
   const handleLinkPress = (url: string) => {
@@ -21,21 +21,16 @@ export default function Credits() {
         <Text className="text-white text-xl font-semibold mb-3">APIs & Data Sources</Text>
         <Text className="text-gray-300 text-base mb-2">- AniList API (for Anime & Manga data)</Text>
         <Text className="text-gray-300 text-base mb-2">- TMDB API (for Movie & TV show data)</Text>
-        <Text className="text-gray-300 text-base">- MangaDex API (for Manga chapters)</Text>
+        <Text className="text-gray-300 text-base mb-2">- MangaDex API (for Manga chapters)</Text>
+        <Text className="text-gray-300 text-base">- Videasy (for Video Playback)</Text>
       </View>
-
-      <View className="bg-neutral-800 rounded-lg p-4 mb-4">
-        <Text className="text-white text-xl font-semibold mb-3">Special Thanks</Text>
-        <Text className="text-gray-300 text-base mb-2">- Open-source community for amazing tools and libraries.</Text>
-        <Text className="text-gray-300 text-base">- All contributors and testers.</Text>
-      </View>
-
+      
       <TouchableOpacity
         className="flex-row items-center bg-blue-600 rounded-lg p-4 mb-4"
-        onPress={() => handleLinkPress("https://expo.dev/")}
+        onPress={() => handleLinkPress("https://flixora.devh.in")}
       >
         <Feather name="external-link" size={22} color="#FFFFFF" className="mr-3" />
-        <Text className="text-white text-lg flex-1">Visit Expo Website</Text>
+        <Text className="text-white text-lg flex-1">Visit our Website</Text>
         <Feather name="chevron-right" size={20} color="#FFFFFF" />
       </TouchableOpacity>
 

@@ -2,42 +2,36 @@ import { useRouter, Stack } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import { useEffect, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { AuthProvider, useAuth } from "../context/AuthContest";
 import { ModeProvider, useMode } from "../context/ModeContext";
 import "./globals.css";
 import SplashScreen from "./splash";
+import { WishlistProvider } from "../context/WishlistContext";
+import Toast from 'react-native-toast-message';
 
 function RootLayoutNav() {
-  const { isLoggedIn, isLoading } = useAuth();
   const { mode } = useMode();
   const router = useRouter();
   const [isSplashAnimationFinished,setSplashAnimationFinished] = useState(false);
 
   useEffect(() => {
-    if (!isLoading) {
-      const timer = setTimeout(() => {
-        setSplashAnimationFinished(true);
-      }, 1250); // Corresponds to the new splash screen animation duration
-      return () => clearTimeout(timer);
-    }
-  }, [isLoading]);
+    const timer = setTimeout(() => {
+      setSplashAnimationFinished(true);
+    }, 1250); // Corresponds to the new splash screen animation duration
+    return () => clearTimeout(timer);
+  }, []);
 
   useEffect(() => {
     if (isSplashAnimationFinished) {
       const navTimer = setTimeout(() => {
-        if (isLoggedIn) {
-          if (mode) {
-            router.replace("/(tabs)");
-          } else {
-            router.replace("/(auth)/mode-selector");
-          }
+        if (mode) {
+          router.replace("/(tabs)");
         } else {
-          router.replace("/(auth)/onboarding");
+          router.replace("/(auth)/mode-selector");
         }
       }, 0);
       return () => clearTimeout(navTimer);
     }
-  }, [isSplashAnimationFinished, isLoggedIn, mode,router]);
+  }, [isSplashAnimationFinished, mode, router]);
 
   if (!isSplashAnimationFinished) {
     return <SplashScreen />;
@@ -48,7 +42,6 @@ function RootLayoutNav() {
       <StatusBar hidden={true} />
       <SafeAreaView style={{ flex: 1 }} className="bg-black">
         <Stack>
-          <Stack.Screen name="(auth)/onboarding" options={{ headerShown: false }} />
           <Stack.Screen name="(auth)/mode-selector" options={{ headerShown: false }} />
           <Stack.Screen name="(tabs)" options={{ headerShown: false, animation: 'slide_from_right' }} />
           <Stack.Screen name="movies" options={{ headerShown: false, animation: 'slide_from_right' }} />
@@ -75,10 +68,11 @@ function RootLayoutNav() {
 
 export default function RootLayout() {
   return (
-    <AuthProvider>
-      <ModeProvider>
+    <ModeProvider>
+      <WishlistProvider>
         <RootLayoutNav />
-      </ModeProvider>
-    </AuthProvider>
+        <Toast />
+      </WishlistProvider>
+    </ModeProvider>
   );
 }

@@ -1,9 +1,11 @@
+import { LinearGradient } from 'expo-linear-gradient';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import React, { useEffect, useState } from 'react';
-import { ActivityIndicator, Image, ScrollView, StyleSheet, Text, TouchableOpacity, View, FlatList } from 'react-native';
-import { getAnimeDetails, Anime } from '../../utils/anilistApi';
-import { Play, Star } from 'react-native-feather';
-import { LinearGradient } from 'expo-linear-gradient';
+import { FlatList, Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Heart, Play, Star } from 'react-native-feather';
+import { Anime, getAnimeDetails } from '../../utils/anilistApi';
+import { useWishlist } from '../../context/WishlistContext';
+import Toast from 'react-native-toast-message';
 
 export default function AnimeDetails() {
   const { id } = useLocalSearchParams();
@@ -11,6 +13,29 @@ export default function AnimeDetails() {
   const [anime, setAnime] = useState<Anime | null>(null);
   const [loading, setLoading] = useState(true);
   const [dub, setDub] = useState(false);
+
+  const { addToWishlist, removeFromWishlist, isInWishlist } = useWishlist();
+  const isWishlisted = anime ? isInWishlist(anime.id.toString(), 'anime') : false;
+
+  const handleWishlistToggle = () => {
+    if (!anime) return;
+    const wishlistItem = { id: anime.id.toString(), type: 'anime', title: anime.title.english || anime.title.romaji };
+    if (isWishlisted) {
+      removeFromWishlist(wishlistItem.id, wishlistItem.type);
+      Toast.show({
+        type: 'success',
+        text1: 'Removed from Wishlist',
+        text2: `${wishlistItem.title} has been removed from your wishlist.`
+      });
+    } else {
+      addToWishlist(wishlistItem);
+      Toast.show({
+        type: 'success',
+        text1: 'Added to Wishlist',
+        text2: `${wishlistItem.title} has been added to your wishlist.`
+      });
+    }
+  };
 
   useEffect(() => {
     const fetchDetails = async () => {
@@ -112,6 +137,7 @@ export default function AnimeDetails() {
             source={{ uri: anime.bannerImage || anime.coverImage.extraLarge }}
             style={styles.poster}
             resizeMode="cover"
+            blurRadius={5}
           />
           <LinearGradient
             colors={['transparent', 'rgba(0,0,0,0.8)']}
@@ -188,13 +214,19 @@ export default function AnimeDetails() {
 
       </ScrollView>
 
-      <View style={styles.playButtonContainer}>
+      <View style={styles.bottomButtonsContainer}>
         <TouchableOpacity
           style={styles.playButton}
           onPress={() => router.push(`/player/anime?id=${anime.id}`)}
         >
           <Play color="white" width={20} height={20} style={styles.playIcon} />
           <Text style={styles.playButtonText}>Play</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.wishlistButton}
+          onPress={handleWishlistToggle}
+        >
+          <Heart color="white" width={24} height={24} fill={isWishlisted ? "white" : "transparent"} />
         </TouchableOpacity>
       </View>
     </View>
@@ -218,9 +250,10 @@ const styles = StyleSheet.create({
     infoSection: { paddingHorizontal: 15, marginTop: 20 },
     infoLabel: { color: '#9ca3af', fontSize: 16, marginBottom: 5 },
     infoValue: { color: 'white', fontSize: 16 },
-    playButtonContainer: { padding: 15, borderTopWidth: 1, borderColor: '#1f2937', backgroundColor: 'black' },
-    playButton: { backgroundColor: '#3b82f6', borderRadius: 12, paddingVertical: 14, flexDirection: 'row', alignItems: 'center', justifyContent: 'center' },
+    bottomButtonsContainer: { flexDirection: 'row', padding: 15, borderTopWidth: 1, borderColor: '#1f2937', backgroundColor: 'black', alignItems: 'center' },
+    playButton: { flex: 1, backgroundColor: '#3b82f6', borderRadius: 12, paddingVertical: 14, flexDirection: 'row', alignItems: 'center', justifyContent: 'center' },
     playIcon: { marginRight: 10 },
     playButtonText: { color: 'white', fontSize: 18, fontWeight: 'bold' },
+    wishlistButton: { marginLeft: 15, padding: 10, borderRadius: 12, backgroundColor: '#374151' },
     scrollContentContainer: { paddingBottom: 100 }, // Make space for play button
 });

@@ -17,7 +17,7 @@ export default function ProfileScreenStack() {
         <Stack.Screen name="developers" options={{ headerTitle: 'Developers' }} />
         <Stack.Screen name="credits" options={{ headerTitle: 'Credits' }} />
         <Stack.Screen name="app-version" options={{ headerTitle: 'App Version' }} />
-        <Stack.Screen name="account-details" options={{ headerTitle: 'Account Details' }} />
+        
       </Stack>
     </View>
   );

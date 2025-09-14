@@ -7,12 +7,7 @@ import ModeSwitcher from "../../../components/ModeSwitcher";
 export default function Profile() {
   const router = useRouter();
 
-  // Placeholder data for profile (will be replaced by Google account data)
-  const userProfile = {
-    name: "Test Mail",
-    email: "testmail@gmail.com",
-    profilePic: require("../../../assets/images/flixora.png"), // Placeholder image
-  };
+  
 
   const settingsOptions = [
     { id: 'settings', name: 'Settings', icon: 'settings' },
@@ -25,30 +20,19 @@ export default function Profile() {
     router.push(`/profile/${id}`);
   };
 
-  const handleAccountPress = () => {
-    router.push({
-      pathname: "/profile/account-details",
-      params: userProfile,
-    });
-  };
+  
 
   return (
     <View className="flex-1 bg-black p-4">
       {/* Profile Card */}
-      <TouchableOpacity
-        className="bg-neutral-800 rounded-lg p-4 flex-row items-center mb-6"
-        onPress={handleAccountPress}
+      <View
+        className="bg-neutral-800 rounded-lg mb-6 overflow-hidden"
       >
         <Image
-          source={userProfile.profilePic}
-          className="w-20 h-20 rounded-full mr-4 border-2 border-white"
+          source={require("../../../assets/images/fx1.jpg")}
+          className="w-full h-48"
         />
-        <View>
-          <Text className="text-white text-xl font-bold">{userProfile.name}</Text>
-          <Text className="text-gray-400 text-base">{userProfile.email}</Text>
-        </View>
-        <Feather name="chevron-right" size={20} color="#808080" className="ml-auto" />
-      </TouchableOpacity>
+      </View>
 
       {/* Mode Switcher */}
       <ModeSwitcher />

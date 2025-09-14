@@ -1,10 +1,10 @@
-import { Link } from 'expo-router';
-import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { ActivityIndicator, Dimensions, FlatList, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { getTrendingAnime, Anime, getPopularAnime, getTopRatedAnime } from '../../utils/anilistApi';
+import { FontAwesome } from '@expo/vector-icons';
 import { Image } from 'expo-image';
 import { LinearGradient } from 'expo-linear-gradient';
-import { FontAwesome } from '@expo/vector-icons';
+import { Link } from 'expo-router';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
+import { Dimensions, FlatList, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Anime, getPopularAnime, getTopRatedAnime, getTrendingAnime } from '../../utils/anilistApi';
 import { getCache, setCache } from '../../utils/cache';
 
 export default function HomeAnime() {

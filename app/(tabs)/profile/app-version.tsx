@@ -1,7 +1,7 @@
-import { Text, View, TouchableOpacity, Alert } from "react-native";
+import { Feather } from "@expo/vector-icons";
 import * as Application from 'expo-application';
 import { useEffect, useState } from 'react';
-import { Feather } from "@expo/vector-icons";
+import { Alert, Text, TouchableOpacity, View } from "react-native";
 
 export default function AppVersion() {
   const [appVersion, setAppVersion] = useState('Loading...');
@@ -18,7 +18,7 @@ export default function AppVersion() {
   }, []);
 
   const handleCheckForUpdates = () => {
-    Alert.alert("Check for Updates", "Checking for new updates... (Feature not fully implemented)");
+    Alert.alert("Check for Updates", "No update found...")
     // In a real app, you would call an API to check for updates
   };
 

@@ -43,7 +43,7 @@ export default function MoviePlayer({ videoId, type, seasonNumber, episodeNumber
       }
     }
     setEmbedUrl(url);
-  }, [videoId, type, seasonNumber, episodeNumber, sourceType, vidlinkProVariant]); // Add vidlinkProVariant to dependencies
+  }, [videoId, type, seasonNumber, episodeNumber, dub, sourceType, vidlinkProVariant]);
 
   useEffect(() => {
     return () => {

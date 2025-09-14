@@ -1,11 +1,15 @@
-import { Text, View, ScrollView, Linking, TouchableOpacity } from "react-native";
 import { Feather } from "@expo/vector-icons";
+import { Linking, ScrollView, Text, TouchableOpacity, View } from "react-native";
 
 export default function Developers() {
   const developers = [
-    { id: '1', name: 'John Doe', role: 'Lead Developer', github: 'https://github.com/johndoe' },
-    { id: '2', name: 'Jane Smith', role: 'UI/UX Designer', github: 'https://github.com/janesmith' },
-    { id: '3', name: 'Peter Jones', role: 'Backend Engineer', github: 'https://github.com/peterjones' },
+    { id: '1', name: 'Naveen xD', role: 'Lead Developer', github: 'https://github.com/Naveen-X' },
+    { id: '2', name: 'Srishanth', role: 'UI/UX Designer', github: 'https://github.com/AikaSrishanth' },
+    { id: '3', name: 'Aditya Valmiki', role: 'Backend Engineer', github: 'https://github.com/adhityavalmiki' },
+    { id: '4', name: 'Nithin Kumar', role: 'Team Lead', github: 'https://github.com/' },
+    { id: '5', name: 'Yogeswararao', role: 'Assistant Lead', github: 'https://github.com/' },
+    { id: '6', name: 'Shanmukh', role: 'Assisssssssstant Lead', github: 'https://github.com/' },
+    
   ];
 
   const handleGithubPress = (url: string) => {
@@ -34,10 +38,10 @@ export default function Developers() {
 
       <View className="bg-neutral-800 rounded-lg p-4 mt-4">
         <Text className="text-white text-xl font-semibold mb-2">Want to contribute?</Text>
-        <Text className="text-gray-400 text-base mb-3">We are always looking for talented individuals to join our team. Check out our GitHub repository for more information.</Text>
+        {/* <Text className="text-gray-400 text-base mb-3"></Text> */}
         <TouchableOpacity
           className="flex-row items-center bg-blue-600 rounded-lg p-3"
-          onPress={() => handleGithubPress("https://github.com/your-org/flixora")}
+          onPress={() => handleGithubPress("https://github.com/Naveen-X/Folixora")}
         >
           <Feather name="external-link" size={20} color="#FFFFFF" className="mr-2" />
           <Text className="text-white text-base flex-1">Visit our GitHub</Text>
