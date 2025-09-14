@@ -30,12 +30,15 @@ export default function HomeAnime() {
 
         const trending = await getTrendingAnime();
         setTrendingAnime(trending);
+        console.log("Trending Anime:", trending.length);
 
         const popular = await getPopularAnime(); // Fetch popular anime
         setPopularAnime(popular);
+        console.log("Popular Anime:", popular.length);
 
         const topRated = await getTopRatedAnime(); // Fetch top-rated anime
         setTopRatedAnime(topRated);
+        console.log("Top Rated Anime:", topRated.length);
 
         // Update cache
         setCache({ trendingAnime: trending, popularAnime: popular, topRatedAnime: topRated });

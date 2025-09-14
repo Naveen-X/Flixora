@@ -12,8 +12,7 @@
   },
   "dependencies": {
     "@expo/vector-icons": "^14.1.0",
-    "@react-native-async-storage/async-storage": "^2.2.0",
-    "@react-native-picker/picker": "^2.11.2",
+    "@react-native-async-storage/async-storage": "^2.1.2",
     "@react-navigation/bottom-tabs": "^7.3.10",
     "@react-navigation/elements": "^2.6.3",
     "@react-navigation/native": "^7.1.6",
@@ -42,8 +41,7 @@
     "react-native-feather": "^1.1.2",
     "react-native-gesture-handler": "~2.24.0",
     "react-native-image-pan-zoom": "^2.1.12",
-    "react-native-pager-view": "^6.9.1",
-    "react-native-picker": "^4.3.7",
+    "react-native-pager-view": "^6.7.1",
     "react-native-reanimated": "~3.17.5",
     "react-native-safe-area-context": "5.4.0",
     "react-native-screens": "~4.11.1",
@@ -60,6 +58,17 @@
     "eslint": "^9.34.0",
     "eslint-config-expo": "~9.2.0",
     "typescript": "~5.8.3"
+  },
+  "expo": {
+    "doctor": {
+      "reactNativeDirectoryCheck": {
+        "exclude": [
+          "react-native-image-pan-zoom",
+          "react-native-feather",
+          "react-navigation-shared-element"
+        ]
+      }
+    }
   },
   "private": true
 }

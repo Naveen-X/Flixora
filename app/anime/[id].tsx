@@ -37,6 +37,8 @@ export default function AnimeDetails() {
     }
   };
 
+  
+
   useEffect(() => {
     const fetchDetails = async () => {
       if (!id) return;
@@ -56,7 +58,7 @@ export default function AnimeDetails() {
   if (loading) {
     return (
       <View style={styles.container}> {/* Use main container style for consistency */}
-        <ScrollView style={{ flex: 1 }} contentContainerStyle={styles.scrollContentContainer}>
+        <ScrollView style={{ flex: 1, backgroundColor: 'black' }} contentContainerStyle={styles.scrollContentContainer}>
           {/* Skeleton for Poster */}
           <View style={styles.posterContainer}>
             <View style={[styles.poster, { backgroundColor: '#333' }]} /> {/* Placeholder for image */}
@@ -127,11 +129,11 @@ export default function AnimeDetails() {
     );
   }
 
-  const episodes = Array.from({ length: anime.episodes }, (_, i) => i + 1);
+  
 
   return (
     <View style={styles.container}>
-      <ScrollView style={{ flex: 1 }} contentContainerStyle={styles.scrollContentContainer}>
+      <ScrollView style={{ flex: 1, backgroundColor: 'black' }} contentContainerStyle={styles.scrollContentContainer}>
         <View style={styles.posterContainer}>
           <Image
             source={{ uri: anime.bannerImage || anime.coverImage.extraLarge }}
@@ -212,6 +214,8 @@ export default function AnimeDetails() {
             <Text style={styles.infoValue}>{anime.description.replace(/<br>/g, '\n')}</Text>
         </View>
 
+        
+
       </ScrollView>
 
       <View style={styles.bottomButtonsContainer}>
@@ -250,10 +254,11 @@ const styles = StyleSheet.create({
     infoSection: { paddingHorizontal: 15, marginTop: 20 },
     infoLabel: { color: '#9ca3af', fontSize: 16, marginBottom: 5 },
     infoValue: { color: 'white', fontSize: 16 },
-    bottomButtonsContainer: { flexDirection: 'row', padding: 15, borderTopWidth: 1, borderColor: '#1f2937', backgroundColor: 'black', alignItems: 'center' },
+    bottomButtonsContainer: { flexDirection: 'row', padding: 15, borderTopWidth: 1, borderColor: '#1f2937', backgroundColor: 'black', alignItems: 'center', position: 'absolute', bottom: 0, left: 0, right: 0 },
     playButton: { flex: 1, backgroundColor: '#3b82f6', borderRadius: 12, paddingVertical: 14, flexDirection: 'row', alignItems: 'center', justifyContent: 'center' },
     playIcon: { marginRight: 10 },
     playButtonText: { color: 'white', fontSize: 18, fontWeight: 'bold' },
     wishlistButton: { marginLeft: 15, padding: 10, borderRadius: 12, backgroundColor: '#374151' },
-    scrollContentContainer: { paddingBottom: 100 }, // Make space for play button
+    scrollContentContainer: { paddingBottom: 100, flexGrow: 1 }, 
+    
 });

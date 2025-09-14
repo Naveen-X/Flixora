@@ -1,8 +1,8 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState, memo } from "react";
 import { ActivityIndicator, ImageBackground, StyleSheet, TouchableWithoutFeedback, View } from "react-native";
 import { WebView } from "react-native-webview";
 
-export default function MoviePlayer({ videoId, type, seasonNumber, episodeNumber, dub, onClose, sourceType = 'videasy', vidlinkProVariant = 'default' }) {
+const MoviePlayer = ({ videoId, type, seasonNumber, episodeNumber, dub, onClose, sourceType = 'videasy', vidlinkProVariant = 'default' }) => {
   const [loading, setLoading] = useState(true);
   const [showControls, setShowControls] = useState(true);
   const [canGoBack, setCanGoBack] = useState(false);
@@ -121,7 +121,9 @@ export default function MoviePlayer({ videoId, type, seasonNumber, episodeNumber
       </View>
     </TouchableWithoutFeedback>
   );
-}
+};
+
+export default memo(MoviePlayer);
 
 const styles = StyleSheet.create({
   container: {
